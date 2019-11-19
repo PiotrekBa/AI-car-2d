@@ -12,8 +12,6 @@ class ForceService {
 
     static getDragForce(velocity) {
         const cDrag = -0.4257;
-        // velocity.mult(velocity.mag());
-        // return velocity.mult(cDrag);
         return p5.Vector
             .mult(velocity, velocity.mag())
             .mult(cDrag);
