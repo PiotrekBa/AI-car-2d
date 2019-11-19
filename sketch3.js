@@ -2,7 +2,16 @@ function setup() {
     createCanvas(800, 800);
 }
 
-
+const conf = {
+    dt: 0.17,
+    posX: 0,
+    posY: 0,
+    mass: 1000,
+    long: 20,
+    engineForce: 1300,
+    breakingForce: -800,
+    turnDelta: 0.2
+}
 
 let dt = 0.17;
 
@@ -32,6 +41,7 @@ const heading = new p5.Vector(1, 0);
 
 let omega;
 
+let car = new Car(conf);
 
 let pedal = 0;
 let breakPedal = 0;
@@ -64,85 +74,78 @@ function draw() {
 
 
 
-    let velCopy
-    //traction force
-    tractionForce = p5.Vector.mult(heading, engineForce)
-        .mult(pedal);
-    fill(50);
-    text('traction : ' + roundVectorMag(tractionForce), 0, 20);
+    // let velCopy
+    // //traction force
+    // tractionForce = p5.Vector.mult(heading, engineForce)
+    //     .mult(pedal);
+    // fill(50);
+    // text('traction : ' + roundVectorMag(tractionForce), 0, 20);
 
-    //drag force
-    velCopy = velocity.copy();
-    velCopy.mult(velCopy.mag());
-    dragForce = p5.Vector.mult(velCopy, cDrag);
-    text('drag : -' + roundVectorMag(dragForce), 200, 20);
+    // //drag force
+    // velCopy = velocity.copy();
+    // velCopy.mult(velCopy.mag());
+    // dragForce = p5.Vector.mult(velCopy, cDrag);
+    // text('drag : -' + roundVectorMag(dragForce), 200, 20);
 
-    //friction force
-    velCopy = velocity.copy();
-    frictionForce = p5.Vector.mult(velCopy, cFriction);
-    text('friction : -' + roundVectorMag(frictionForce), 400, 20);
+    // //friction force
+    // velCopy = velocity.copy();
+    // frictionForce = p5.Vector.mult(velCopy, cFriction);
+    // text('friction : -' + roundVectorMag(frictionForce), 400, 20);
 
-    //breaking force
-    breakingForce = p5.Vector.mult(heading, cBreaking).mult(breakPedal);
+    // //breaking force
+    // breakingForce = p5.Vector.mult(heading, cBreaking).mult(breakPedal);
 
-    //longtitudinal force
-    let sumVector = p5.Vector.add(tractionForce, dragForce);
-    sumVector.add(frictionForce);
-    sumVector.add(breakingForce);
-    longForce = sumVector;
-    text('long :' + roundVectorMag(longForce), 600, 20);
+    // //longtitudinal force
+    // let sumVector = p5.Vector.add(tractionForce, dragForce);
+    // sumVector.add(frictionForce);
+    // sumVector.add(breakingForce);
+    // longForce = sumVector;
+    // text('long :' + roundVectorMag(longForce), 600, 20);
 
-    //acceleration
-    acc = p5.Vector.div(longForce, mass);
-    text('acc :' + roundVectorMag(acc), 0, 50);
+    // //acceleration
+    // acc = p5.Vector.div(longForce, mass);
+    // text('acc :' + roundVectorMag(acc), 0, 50);
 
-    //velocity
-    velCopy = velocity.copy();
-    let accCopy = acc.copy();
-    accCopy.mult(dt);
-    velocity = p5.Vector.add(velCopy, accCopy);
-    text('vel :' + roundVectorMag(velocity), 200, 50);
-
-
-
-    //angular velocity
-    if (turn != 0) {
-        let curveRadius = L / sin(delta) * turn;
-        if(velocity.mag() != 0) {
-            omega = velocity.mag() / (curveRadius) * dt;
-        }
-    } else {
-        omega = 0;
-    }
+    // //velocity
+    // velCopy = velocity.copy();
+    // let accCopy = acc.copy();
+    // accCopy.mult(dt);
+    // velocity = p5.Vector.add(velCopy, accCopy);
+    // text('vel :' + roundVectorMag(velocity), 200, 50);
 
 
-    //position
-    velCopy = velocity.copy();
-    velCopy.mult(dt);
-    let posCopy = position.copy();
-    position = p5.Vector.add(posCopy, velCopy);
 
-    if (position.x > 800) {
-        position.x = 0;
-    }
-
-
-    translate(position.x, position.y);
-
-    heading.rotate(omega);
-    velocity.rotate(omega);
-
-    let dir = heading.heading();
-    rotate(dir);
-    rect(0, 0, 20, 10);
-    line(0, 5, heading.x + 50, heading.y + 5)
+    // //angular velocity
+    // if (turn != 0) {
+    //     let curveRadius = L / sin(delta) * turn;
+    //     if(velocity.mag() != 0) {
+    //         omega = velocity.mag() / (curveRadius) * dt;
+    //     }
+    // } else {
+    //     omega = 0;
+    // }
 
 
-    let r = new Ray(100,100);
-    r.show();
+    // //position
+    // velCopy = velocity.copy();
+    // velCopy.mult(dt);
+    // let posCopy = position.copy();
+    // position = p5.Vector.add(posCopy, velCopy);
 
-    // draw detection lines
-    drawDetectionLines();
+    // if (position.x > 800) {
+    //     position.x = 0;
+    // }
+
+
+    // translate(position.x, position.y);
+
+    // heading.rotate(omega);
+    // velocity.rotate(omega);
+
+    // let dir = heading.heading();
+    // rotate(dir);
+    // rect(0, 0, 20, 10);
+    // line(0, 5, heading.x + 50, heading.y + 5)
 }
 
 
