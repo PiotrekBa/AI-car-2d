@@ -28,6 +28,14 @@ class Car {
         this.pedalBreak = 0;
     }
 
+    runForward(pedalGas) {
+        this.pedalGas = pedalGas;
+    }
+
+    break(pedalBreak) {
+        this.pedalBreak = pedalBreak;
+    }
+
     calcTractionForce() {
         const engineForce = this.engine.getForce();
         return p5.Vector
@@ -88,6 +96,12 @@ class Car {
         translate(this.position.x, this.position.y);
         this.head.rotate(angle);
         this.velocity.rotate(angle);
+    }
+
+    update() {
+        this.calcAcceleration();
+        this.calcVelocity();
+        this.calcPosition();
     }
 
     show() {
