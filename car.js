@@ -13,10 +13,10 @@
 
 class Car {
     constructor(conf) {
-        this.position = createVector(conf.posX, conf.posY);
-        this.velocity = createVector(0, 0);
-        this.acceleration = createVector(0, 0);
-        this.head = createVector(1, 0);
+        this.position = new p5.Vector(conf.posX, conf.posY);
+        this.velocity = new p5.Vector(0, 0);
+        this.acceleration = new p5.Vector(0, 0);
+        this.head = new p5.Vector(1, 0);
         this.mass = conf.mass;
         this.long = conf.long;
         this.engine = new Engine(conf.engineForce);
@@ -44,13 +44,13 @@ class Car {
     }
 
     calcBreakingForce() {
-        return p5.Vector.mult(head, breakingForce).mult(pedalBreak);
+        return p5.Vector.mult(this.head, this.breaking).mult(this.pedalBreak);
     }
 
     calcAllForces() {
         const traction = this.calcTractionForce();
-        const breaking = this.calcTractionForce();
-        return ForceService.getWorldForces(velocity, traction, breaking);
+        const breaking = this.calcBreakingForce();
+        return ForceService.getWorldForces(this.velocity, traction, breaking);
     }
 
     calcAcceleration() {
@@ -58,7 +58,7 @@ class Car {
     }
 
     calcVelocity() {
-        const acc = P5.Vector.mult(this.acceleration, this.dt);
+        const acc = p5.Vector.mult(this.acceleration, this.dt);
         this.velocity.add(acc);
     }
 
@@ -81,19 +81,18 @@ class Car {
 
     turn(dir) {
         const angle = this.calcAngle(dir);
-        rotateCar(angle);
+        this.rotateCar(angle);
     }
 
     calcAngle(dir) {
         if (dir != 0) {
-            let curveRadius = this.long / sin(this.turnDelta) * dir;
+            let curveRadius = this.long / Math.sin(this.turnDelta) * dir;
             return this.velocity.mag() / (curveRadius) * this.dt;
         }
         return 0;
     }
 
     rotateCar (angle) {
-        translate(this.position.x, this.position.y);
         this.head.rotate(angle);
         this.velocity.rotate(angle);
     }
@@ -105,9 +104,10 @@ class Car {
     }
 
     show() {
+        translate(this.position.x, this.position.y);
         let dir = this.head.heading();
         rotate(dir);
         rect(0, 0, 20, 10);
-        line(0, 5, heading.x + 50, heading.y + 5)
+        line(0, 5, dir.x + 50, dir.y + 5)
     }
 }
