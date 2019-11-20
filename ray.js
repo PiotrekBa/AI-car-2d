@@ -1,14 +1,15 @@
 class Ray {
-    constructor(x,y) {
-        this.pos = createVector(x, y);
-        this.direction = createVector(1, 0);
+    constructor(pos, dir) {
+        this.pos = pos;
+        this.dir = dir;
     }
 
     show() {
-        stroke(255);
         push();
-        translate(this.pos.x, this.pos.y);
-        line(0, 0, this.direction.x * 100, this.direction.y* 100);
+        stroke(0);
+        ellipse(this.pos.x, this.pos.y, 4);
+        ellipse(this.dir.x, this.dir.y, 4);
+        // line(this.pos.x, this.pos.y, this.direction.x, this.direction.y);
         pop();
     }
 }

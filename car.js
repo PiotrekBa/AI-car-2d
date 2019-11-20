@@ -23,6 +23,7 @@ class Car {
         this.breaking = conf.breakingForce;
         this.turnDelta = conf.turnDelta;
 
+        this.angle = 0;
         this.dt = conf.dt;
         this.pedalGas = 0;
         this.pedalBreak = 0;
@@ -80,8 +81,8 @@ class Car {
     }
 
     turn(dir) {
-        const angle = this.calcAngle(dir);
-        this.rotateCar(angle);
+        this.angle = this.calcAngle(dir);
+        this.rotateCar();
     }
 
     calcAngle(dir) {
@@ -92,7 +93,8 @@ class Car {
         return 0;
     }
 
-    rotateCar (angle) {
+    rotateCar () {
+        const angle = this.angle;
         this.head.rotate(angle);
         this.velocity.rotate(angle);
     }
@@ -104,10 +106,40 @@ class Car {
     }
 
     show() {
+        push();
         translate(this.position.x, this.position.y);
         let dir = this.head.heading();
         rotate(dir);
-        rect(0, 0, 20, 10);
-        line(0, 5, dir.x + 50, dir.y + 5)
+        rect(-10 , -5 , 20, 10);
+        pop();
+    }
+
+    showDetectionLine() {
+        let lRay;
+        let rRay;
+        let cRay;
+
+        lRay = this.calcRaysVector(10, -5, 0, -100);
+        lRay.show();
+
+        rRay = this.calcRaysVector(10, 5, 0, 100);
+        rRay.show();
+
+        cRay = this.calcRaysVector(10, 0, 100, 0);
+        cRay.show();
+        }
+
+    calcRaysVector(offsetX, offsetY, dirX, dirY) {
+        const angle = this.head.heading(); 
+        push();
+        translate(this.position.x, this.position.y);
+        let startVector = new p5.Vector(offsetX, offsetY);
+        startVector.rotate(angle);
+        startVector.add(this.position);
+        let endVector = new p5.Vector(dirX, dirY);
+        endVector.rotate(angle);
+        endVector.add(startVector);
+        pop();
+        return new Ray(startVector, endVector);
     }
 }

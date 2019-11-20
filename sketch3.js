@@ -1,14 +1,14 @@
 let car;
 
 const conf = {
-    dt: 0.17,
+    dt: 0.2,
     posX: 100,
     posY: 100,
     mass: 1000,
     long: 20,
     engineForce: 1000,
     breakingForce: -800,
-    turnDelta: 0.4
+    turnDelta: 0.3
 }
 
 function setup() {
@@ -39,24 +39,6 @@ function draw() {
 
     car.update();
     car.show();
-}
+    car.showDetectionLine();
 
-
-const roundVectorMag = function (vector) {
-    return Math.floor(vector.mag());
-}
-
-const drawDetectionLines = function() {
-    translate(20, 5);
-    stroke('red');
-    rotate(radians(90));
-    line(0, 0, 200, 0);
-    rotate(radians(-45));
-    line(0, 0, 200, 0);
-    rotate(radians(-45));
-    line(0, 0, 200, 0);
-    rotate(radians(-45));
-    line(0, 0, 200, 0);
-    rotate(radians(-45));
-    line(0, 0, 200, 0);
 }
