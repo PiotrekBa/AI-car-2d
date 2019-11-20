@@ -14,46 +14,18 @@ class Ray {
     }
 
     lookAt(boundry) {
-        const x1 = this.pos.x;
-        const y1 = this.pos.y;
-        const x2 = this.dir.x;
-        const y2 = this.dir.y;
-
-        const x3 = boundry.x1;
-        const y3 = boundry.y1;
-        const x4 = boundry.x2;
-        const y4 = boundry.y2;
-
-        const denominator = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-
-        const tCounter = (x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4);
-
-        const uCounter = (x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3);
-
-        if (denominator == 0) {
-            return;
-        }
-
-        const t = tCounter / denominator;
-        const u = -uCounter / denominator;
-
-        let collisionPoint;
-        if (t <= 1 && u >= 0 && u <= 1) {
-            this.color = color(0, 200, 0);
-            const px = x1 + t * (x2 - x1);
-            const py = y1 + t * (y2 - y1);
-            ellipse(px, py, 4);
-            collisionPoint = new p5.Vector(px,py);
-        }
-
-        if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
+        const tu = this.getLinesIntersection(boundry);
+        if (CollisionService.checkIntersection(tu)) {
             this.color = color(255, 0, 0);
-            const px = x1 + t * (x2 - x1);
-            const py = y1 + t * (y2 - y1);
+            const px = this.pos.x + tu.t * (this.dir.x - this.pos.x);
+            const py = this.pos.y + tu.t * (this.dir.y - this.pos.y);
             this.dir = new p5.Vector(px, py);
         }
+    }
 
-        return collisionPoint;
+    getLinesIntersection(boundry) {
+        return CollisionService
+            .linelineIntersection(this.pos.x, this.pos.y, this.dir.x,this.dir.y, boundry.x1, boundry.y1, boundry.x2, boundry.y2);
     }
 
     getDistance() {

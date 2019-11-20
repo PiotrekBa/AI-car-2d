@@ -37,8 +37,6 @@ class Car {
         this.rectC;
         this.rectD;
 
-        this.collPoints;
-
         this.collision = false;
     }
 
@@ -140,32 +138,19 @@ class Car {
     }
 
     calcRecPoints() {
-        // this.rectA = this.prepareRotateVectorWithPosition(-10, -5);
-        // this.rectB = this.prepareRotateVectorWithPosition(-10, 5);
-        // this.rectC = this.prepareRotateVectorWithPosition(10, -5);
-        // this.rectD = this.prepareRotateVectorWithPosition(10, 5);
-        this.rectA = new p5.Vector(-10, -5);
-        this.rectB = new p5.Vector(-10, 5);
-        this.rectC = new p5.Vector(10, -5);
-        this.rectD = new p5.Vector(10, 5);
+        this.rectA = this.prepareRotateVectorWithPosition(-10, -5);
+        this.rectB = this.prepareRotateVectorWithPosition(-10, 5);
+        this.rectC = this.prepareRotateVectorWithPosition(10, -5);
+        this.rectD = this.prepareRotateVectorWithPosition(10, 5);
     }
 
     calcCollision() {
-        push();
-        translate(this.position.x, this.position.y);
-        rotate(this.head.heading());
-        for (let p of this.collPoints) {
-            if (p) {
-                p.sub(this.position);
-                if (this.rectA.x < p.x && this.rectA.y < p.y
-                    && this.rectB.x < p.x && this.rectB.y > p.y
-                    && this.rectC.x > p.x && this.rectC.y < p.y
-                    && this.rectD.x > p.x && this.rectD.y > p.y) {
-                    this.collision = true;
-                }
-            }
+        if (this.rectA.x < p.x && this.rectA.y < p.y
+            && this.rectB.x < p.x && this.rectB.y > p.y
+            && this.rectC.x > p.x && this.rectC.y < p.y
+            && this.rectD.x > p.x && this.rectD.y > p.y) {
+            this.collision = true;
         }
-        pop();
     }
 
     showDetection() {
@@ -194,14 +179,11 @@ class Car {
     }
 
     detectBoundries(boundries) {
-        let collPoints = [];
         for (let b of boundries) {
-            collPoints.push(this.lRay.lookAt(b));
-            collPoints.push(this.rRay.lookAt(b));
-            collPoints.push(this.cRay.lookAt(b));
+            this.lRay.lookAt(b);
+            this.rRay.lookAt(b);
+            this.cRay.lookAt(b);
         }
-
-        this.collPoints = collPoints;
     }
 
     getDistances() {
