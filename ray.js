@@ -44,4 +44,9 @@ class Ray {
             this.dir = new p5.Vector(px, py);
         }
     }
+
+    getDistance() {
+        const dist = p5.Vector.sub(this.dir, this.pos).mag();
+        return Math.floor(dist);
+    }
 }

@@ -43,6 +43,7 @@ function draw() {
     car.show();
     car.calcDetection();
     car.detectBoundries(boundries);
+    car.getDistances();
     car.showDetection();
 
     boundries.forEach(b => b.show());

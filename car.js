@@ -69,7 +69,13 @@ class Car {
 
     calcPosition() {
         const velocity = p5.Vector.mult(this.velocity, this.dt);
-        this.position.add(velocity);
+        const a = this.velocity.heading();
+        const b = this.head.heading();
+        if(Math.floor(a) == Math.floor(b)) {
+            this.position.add(velocity);
+        } else {
+            this.velocity.setMag(0);
+        }
     }
 
     turnLeft() {
@@ -150,5 +156,9 @@ class Car {
             this.rRay.lookAt(b);
             this.cRay.lookAt(b);
         }
+    }
+
+    getDistances() {
+        return this.lRay.getDistance();
     }
 }
