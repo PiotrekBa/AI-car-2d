@@ -27,6 +27,10 @@ class Car {
         this.dt = conf.dt;
         this.pedalGas = 0;
         this.pedalBreak = 0;
+
+        this.lRay;
+        this.rRay;
+        this.cRay;
     }
 
     runForward(pedalGas) {
@@ -114,19 +118,16 @@ class Car {
         pop();
     }
 
-    showDetectionLine() {
-        let lRay;
-        let rRay;
-        let cRay;
+    calcDetection () {
+        this.lRay = this.calcRaysVector(10, -5, 0, -100);
+        this.rRay = this.calcRaysVector(10, 5, 0, 100);
+        this.cRay = this.calcRaysVector(10, 0, 100, 0);
+    }
 
-        lRay = this.calcRaysVector(10, -5, 0, -100);
-        lRay.show();
-
-        rRay = this.calcRaysVector(10, 5, 0, 100);
-        rRay.show();
-
-        cRay = this.calcRaysVector(10, 0, 100, 0);
-        cRay.show();
+    showDetection () {
+        this.lRay.show();
+        this.rRay.show();
+        this.cRay.show();
         }
 
     calcRaysVector(offsetX, offsetY, dirX, dirY) {
