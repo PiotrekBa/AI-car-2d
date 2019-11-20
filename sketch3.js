@@ -1,5 +1,5 @@
 let car;
-let boundry;
+let boundries = [];
 
 const conf = {
     dt: 0.2,
@@ -15,7 +15,7 @@ const conf = {
 function setup() {
     createCanvas(800, 800);
     car = new Car(conf);
-    boundry = new Boundry(500,100,500,500);
+    boundries.push(new Boundry(500,100,500,500));
 }
 
 function draw() {
@@ -42,7 +42,8 @@ function draw() {
     car.update();
     car.show();
     car.calcDetection();
+    car.detectBoundries(boundries);
     car.showDetection();
 
-    boundry.show();
+    boundries.forEach(b => b.show());
 }

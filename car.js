@@ -143,4 +143,12 @@ class Car {
         pop();
         return new Ray(startVector, endVector);
     }
+
+    detectBoundries(boundries) {
+        for(let b of boundries) {
+            this.lRay.lookAt(b);
+            this.rRay.lookAt(b);
+            this.cRay.lookAt(b);
+        }
+    }
 }
