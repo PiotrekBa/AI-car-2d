@@ -37,12 +37,23 @@ class Ray {
         const t = tCounter / denominator;
         const u = -uCounter / denominator;
 
-        if (t > 0 && t < 1 && u > 0 && u < 1) {
+        let collisionPoint;
+        if (t <= 1 && u >= 0 && u <= 1) {
+            this.color = color(0, 200, 0);
+            const px = x1 + t * (x2 - x1);
+            const py = y1 + t * (y2 - y1);
+            ellipse(px, py, 4);
+            collisionPoint = new p5.Vector(px,py);
+        }
+
+        if (t >= 0 && t <= 1 && u >= 0 && u <= 1) {
             this.color = color(255, 0, 0);
             const px = x1 + t * (x2 - x1);
             const py = y1 + t * (y2 - y1);
             this.dir = new p5.Vector(px, py);
         }
+
+        return collisionPoint;
     }
 
     getDistance() {
