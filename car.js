@@ -37,7 +37,11 @@ class Car {
         this.rectCD;
         this.rectDA;
 
+        this.axis;
+
         this.collision = false;
+
+        this.checkedPoints = new Set(); 
     }
 
     runForward(pedalGas) {
@@ -135,6 +139,8 @@ class Car {
         this.lRay = this.calcRaysVector(10, -5, 0, -200);
         this.rRay = this.calcRaysVector(10, 5, 0, 200);
         this.cRay = this.calcRaysVector(10, 0, 200, 0);
+        this.axis = this.calcRaysVector(-10, 0, 20, 0);
+        this.axis.showLine();
     }
 
     calcRecPoints() {

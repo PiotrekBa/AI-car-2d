@@ -13,6 +13,14 @@ class Ray {
         pop();
     }
 
+    showLine() {
+        push();
+        stroke(0);
+        fill(color(0, 0, 0));
+        line(this.pos.x, this.pos.y, this.dir.x, this.dir.y);
+        pop();
+    }
+
     lookAt(boundry) {
         const tu = this.getLinesIntersection(boundry);
         if (CollisionService.checkIntersection(tu)) {
