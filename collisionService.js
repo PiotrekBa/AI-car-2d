@@ -27,7 +27,13 @@ class CollisionService {
         const u = params.u;
         return (t >= 0 && t <= 1 && u >= 0 && u <= 1);
     }
+
+    static isLinesIntersection(x1, y1, x2, y2, x3, y3, x4, y4) {
+        const tu = this.linelineIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
+        return this.checkIntersection(tu);
+    }
 }
+
 
 class IntersectionParameters {
     constructor(t, u) {

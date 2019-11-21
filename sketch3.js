@@ -15,7 +15,10 @@ const conf = {
 function setup() {
     createCanvas(800, 800);
     car = new Car(conf);
-    boundries.push(new Boundry(500,100,500,500));
+    boundries.push(new Boundry(100,150,500,150));
+    boundries.push(new Boundry(100,50,600,50));
+    boundries.push(new Boundry(500,150,500,500));
+    boundries.push(new Boundry(600,50,600,500));
 }
 
 function draw() {
@@ -45,7 +48,7 @@ function draw() {
     car.detectBoundries(boundries);
     car.calcRecPoints();
     car.getDistances();
-    // car.calcCollision();
+    car.calcCollision(boundries);
     car.showDetection();
 
     boundries.forEach(b => b.show());

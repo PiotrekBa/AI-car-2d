@@ -32,10 +32,10 @@ class Car {
         this.rRay;
         this.cRay;
 
-        this.rectA;
-        this.rectB;
-        this.rectC;
-        this.rectD;
+        this.rectAB;
+        this.rectBC;
+        this.rectCD;
+        this.rectDA;
 
         this.collision = false;
     }
@@ -132,24 +132,47 @@ class Car {
     }
 
     calcDetection() {
-        this.lRay = this.calcRaysVector(10, -5, 0, -100);
-        this.rRay = this.calcRaysVector(10, 5, 0, 100);
-        this.cRay = this.calcRaysVector(10, 0, 100, 0);
+        this.lRay = this.calcRaysVector(10, -5, 0, -200);
+        this.rRay = this.calcRaysVector(10, 5, 0, 200);
+        this.cRay = this.calcRaysVector(10, 0, 200, 0);
     }
 
     calcRecPoints() {
-        this.rectA = this.prepareRotateVectorWithPosition(-10, -5);
-        this.rectB = this.prepareRotateVectorWithPosition(-10, 5);
-        this.rectC = this.prepareRotateVectorWithPosition(10, -5);
-        this.rectD = this.prepareRotateVectorWithPosition(10, 5);
+        const pointA = this.prepareRotateVectorWithPosition(-10, -5);
+        const pointB = this.prepareRotateVectorWithPosition(-10, 5);
+        const pointC = this.prepareRotateVectorWithPosition(10, -5);
+        const pointD = this.prepareRotateVectorWithPosition(10, 5);
+
+        this.rectAB = new CarSegment(pointA, pointB);
+        this.rectBC = new CarSegment(pointB, pointC);
+        this.rectCD = new CarSegment(pointC, pointD);
+        this.rectDA = new CarSegment(pointD, pointA);
     }
 
-    calcCollision() {
-        if (this.rectA.x < p.x && this.rectA.y < p.y
-            && this.rectB.x < p.x && this.rectB.y > p.y
-            && this.rectC.x > p.x && this.rectC.y < p.y
-            && this.rectD.x > p.x && this.rectD.y > p.y) {
-            this.collision = true;
+    calcCollision(boundries) {
+        // if (this.rectA.x < p.x && this.rectA.y < p.y
+        //     && this.rectB.x < p.x && this.rectB.y > p.y
+        //     && this.rectC.x > p.x && this.rectC.y < p.y
+        //     && this.rectD.x > p.x && this.rectD.y > p.y) {
+        //     this.collision = true;
+        // }
+        for(let b of boundries) {
+            if(this.rectAB.checkLineCollision(b)) {
+                this.collision = true;
+                break;
+            }
+            if(this.rectBC.checkLineCollision(b)) {
+                this.collision = true;
+                break;
+            }
+            if(this.rectCD.checkLineCollision(b)) {
+                this.collision = true;
+                break;
+            }
+            if(this.rectDA.checkLineCollision(b)) {
+                this.collision = true;
+                break;
+            }
         }
     }
 
@@ -192,5 +215,17 @@ class Car {
 
     stop() {
         this.velocity.setMag(0);
+    }
+}
+
+class CarSegment {
+    constructor(pointA, pointB) {
+        this.pointA = pointA;
+        this.pointB = pointB;
+    }
+
+    checkLineCollision(boundry) {
+        return CollisionService.isLinesIntersection(this.pointA.x, this.pointA.y,
+            this.pointB.x, this.pointB.y, boundry.x1, boundry.y1, boundry.x2, boundry.y2);
     }
 }
