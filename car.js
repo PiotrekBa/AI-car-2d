@@ -41,7 +41,7 @@ class Car {
 
         this.collision = false;
 
-        this.checkedPoints = new Set(); 
+        this.checkedPoints = new Set();
     }
 
     runForward(pedalGas) {
@@ -139,8 +139,24 @@ class Car {
         this.lRay = this.calcRaysVector(10, -5, 0, -200);
         this.rRay = this.calcRaysVector(10, 5, 0, 200);
         this.cRay = this.calcRaysVector(10, 0, 200, 0);
+    }
+
+    calcAxis() {
         this.axis = this.calcRaysVector(-10, 0, 20, 0);
         this.axis.showLine();
+    }
+
+    checkCheckPoints(checkPoints) {
+        const axis = this.axis;
+        for (let k of Object.keys(checkPoints)) {
+            const v = checkPoints[k];
+            if (!this.checkedPoints.has(k)) {
+                if (CollisionService.isLinesIntersection(axis.pos.x, axis.pos.y,
+                    axis.dir.x, axis.dir.y, v.x1, v.y1, v.x2, v.y2)) {
+                    this.checkedPoints.add(k);
+                }
+            }
+        }
     }
 
     calcRecPoints() {
@@ -156,26 +172,20 @@ class Car {
     }
 
     calcCollision(boundries) {
-        // if (this.rectA.x < p.x && this.rectA.y < p.y
-        //     && this.rectB.x < p.x && this.rectB.y > p.y
-        //     && this.rectC.x > p.x && this.rectC.y < p.y
-        //     && this.rectD.x > p.x && this.rectD.y > p.y) {
-        //     this.collision = true;
-        // }
-        for(let b of boundries) {
-            if(this.rectAB.checkLineCollision(b)) {
+        for (let b of boundries) {
+            if (this.rectAB.checkLineCollision(b)) {
                 this.collision = true;
                 break;
             }
-            if(this.rectBC.checkLineCollision(b)) {
+            if (this.rectBC.checkLineCollision(b)) {
                 this.collision = true;
                 break;
             }
-            if(this.rectCD.checkLineCollision(b)) {
+            if (this.rectCD.checkLineCollision(b)) {
                 this.collision = true;
                 break;
             }
-            if(this.rectDA.checkLineCollision(b)) {
+            if (this.rectDA.checkLineCollision(b)) {
                 this.collision = true;
                 break;
             }

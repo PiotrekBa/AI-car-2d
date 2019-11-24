@@ -68,7 +68,9 @@ function draw() {
     car.getDistances();
     car.calcCollision(boundries);
     car.showDetection();
+    car.calcAxis();
+    car.checkCheckPoints(checkPoints);
 
-    // checkPoints.forEach((k,v) => v.show());
+    Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());
 }

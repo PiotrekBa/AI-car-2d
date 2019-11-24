@@ -18,10 +18,6 @@ class CollisionService {
         
     }
 
-    static vectorVectorIntersection(v1, v2) {
-        return this.linelineIntersection(v1.x1, v1.y1, v2.x2, v2.y2);
-    }
-
     static checkIntersection(params) {
         const t = params.t;
         const u = params.u;
