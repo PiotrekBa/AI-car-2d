@@ -24,7 +24,7 @@ class Brain {
         for(let i = 0; i < layer.length; i++) {
             const weights = layer[i].weights.length;
             for(let j = 0; j < weights; j++) {
-                layer[i].weights[j] = Math.floor(Math.random()*20)/10-1;
+                layer[i].weights[j] = (Math.floor(Math.random()*20)/10-1);
             }
         }
         return layer;
@@ -34,10 +34,33 @@ class Brain {
         this.layer1.forEach(n => n.prepareOutputs(inputs));
         const inputs2 = this.layer1.map(n => n.output);
 
-        this.layer1.forEach(n => n.prepareOutputs(inputs));
+        this.layer1.forEach(n => n.prepareOutputs(inputs2));
         const inputs3 = this.layer1.map(n => n.output);
 
         this.outputs.forEach(n => n.prepareOutputs(inputs3));
         return this.outputs.map(n => n.output);
+    }
+
+    getAllWeights() {
+        const weights = [];
+        let ws = this.getWeights(this.layer1);
+        weights.push(ws);
+        ws = this.getWeights(this.layer2);
+        weights.push(ws);
+        ws = this.getWeights(this.outputs);
+        weights.push(ws);
+
+        return weights.flat();
+    }
+
+    getWeights(layer) {
+        let w = [];
+        for(let i = 0; i < layer.length; i++) {
+            const weights = layer[i].weights.length;
+            for(let j = 0; j < weights; j++) {
+                w.push(layer[i].weights[j]);
+            }
+        }
+        return w;
     }
 }
