@@ -16,6 +16,10 @@ const conf = {
 function setup() {
     createCanvas(800, 800);
     car = new Car(conf);
+    car.brain = new Brain(3,3,3,2);
+    car.brain.initRandomWeights();
+
+
     boundries.push(new Boundry(100, 150, 500, 150));
     boundries.push(new Boundry(100, 50, 600, 50));
     boundries.push(new Boundry(500, 150, 500, 500));
@@ -42,34 +46,38 @@ function setup() {
 function draw() {
     background(200);
 
-    let pedalGas = 0;
-    let pedalBreak = 0;
+    // let pedalGas = 0;
+    // let pedalBreak = 0;
 
-    if (keyIsDown(UP_ARROW)) {
-        pedalGas = 1;
-    } else if (keyIsDown(DOWN_ARROW)) {
-        pedalBreak = 1;
-    }
+    // if (keyIsDown(UP_ARROW)) {
+    //     pedalGas = 1;
+    // } else if (keyIsDown(DOWN_ARROW)) {
+    //     pedalBreak = 1;
+    // }
 
-    car.runForward(pedalGas);
-    car.break(pedalBreak);
+    // car.runForward(pedalGas);
+    // car.break(pedalBreak);
 
-    if (keyIsDown(LEFT_ARROW)) {
-        car.turnLeft();
-    } else if (keyIsDown(RIGHT_ARROW)) {
-        car.turnRight();
-    }
+    // if (keyIsDown(LEFT_ARROW)) {
+    //     car.turnLeft();
+    // } else if (keyIsDown(RIGHT_ARROW)) {
+    //     car.turnRight();
+    // }
 
     car.update();
     car.show();
     car.calcDetection();
     car.detectBoundries(boundries);
     car.calcRecPoints();
-    car.getDistances();
     car.calcCollision(boundries);
     car.showDetection();
     car.calcAxis();
     car.checkCheckPoints(checkPoints);
+
+    car.useBrain();
+
+
+
 
     Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());

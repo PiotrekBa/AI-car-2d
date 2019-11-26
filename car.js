@@ -42,6 +42,8 @@ class Car {
         this.collision = false;
 
         this.checkedPoints = new Set();
+
+        this.brain;
     }
 
     runForward(pedalGas) {
@@ -231,6 +233,31 @@ class Car {
 
     stop() {
         this.velocity.setMag(0);
+    }
+
+    useBrain() {
+        const dist1 = this.lRay.getDistance();
+        const dist2 = this.cRay.getDistance();
+        const dist3 = this.rRay.getDistance();
+
+        const inputs = [];
+        inputs.push(dist1/200);
+        inputs.push(dist2/200);
+        inputs.push(dist3/200);
+
+        const outputs = this.brain.deliverInputs(inputs);
+
+        if(outputs[0] > 0.5) {
+            this.pedalGas = 1;
+        } else {
+            this.pedalGas = 0;
+        }
+
+        if(outputs[1] > 0.5) {
+            this.turnLeft();
+        } else{
+            this.turnRight();
+        }
     }
 }
 

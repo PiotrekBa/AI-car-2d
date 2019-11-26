@@ -1,9 +1,9 @@
 class Brain {
-    constructor(inputs, layer1, outputs) {
+    constructor(inputs, layer1, layer2, outputs) {
         this.inputs = inputs;
         this.layer1 = this.createLayer(inputs,layer1);
-        // this.layer2 = this.createLayer(layer1, layer2);
-        this.outputs = this.createLayer(layer1, outputs);
+        this.layer2 = this.createLayer(layer1, layer2);
+        this.outputs = this.createLayer(layer2, outputs);
     }
 
     createLayer (inputs, nodes) {
@@ -16,6 +16,7 @@ class Brain {
     
     initRandomWeights() {
         this.layer1 = this.prepareRandomWeightsForLayer(this.layer1);
+        this.layer2 = this.prepareRandomWeightsForLayer(this.layer2);
         this.outputs = this.prepareRandomWeightsForLayer(this.outputs);
     }
 
@@ -23,13 +24,20 @@ class Brain {
         for(let i = 0; i < layer.length; i++) {
             const weights = layer[i].weights.length;
             for(let j = 0; j < weights; j++) {
-                layer[i].weights[j] = Math.floor(Math.random()*10);
+                layer[i].weights[j] = Math.floor(Math.random()*20)/10-1;
             }
         }
         return layer;
     }
 
     deliverInputs(inputs) {
-        
+        this.layer1.forEach(n => n.prepareOutputs(inputs));
+        const inputs2 = this.layer1.map(n => n.output);
+
+        this.layer1.forEach(n => n.prepareOutputs(inputs));
+        const inputs3 = this.layer1.map(n => n.output);
+
+        this.outputs.forEach(n => n.prepareOutputs(inputs3));
+        return this.outputs.map(n => n.output);
     }
 }

@@ -7,6 +7,9 @@ class CheckPoint {
     }
 
     show() {
+        push()
+        stroke(255, 0, 0);
         line(this.x1, this.y1, this.x2, this.y2);
+        pop()
     }
 }
