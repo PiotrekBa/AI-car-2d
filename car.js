@@ -255,7 +255,7 @@ class Car {
 
         if(outputs[1] > 0.5) {
             this.turnLeft();
-        } else{
+        } else {
             this.turnRight();
         }
     }

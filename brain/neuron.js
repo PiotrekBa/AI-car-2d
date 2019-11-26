@@ -24,4 +24,8 @@ class Neuron {
         }
         return sum;
     }
+
+    setWeights(weights) {
+        this.weights = weights;
+    }
 }

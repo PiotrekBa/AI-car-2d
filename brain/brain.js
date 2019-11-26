@@ -63,4 +63,18 @@ class Brain {
         }
         return w;
     }
+
+    setWeights(weights) {
+       this.setWeightsToLayer(weights, this.layer1);
+       this.setWeightsToLayer(weights, this.layer2);
+       this.setWeightsToLayer(weights, this.outputs);
+    }
+
+    setWeightsToLayer(weights, layer) {
+        for(let i = 0; i < layer.length; i++) {
+            let count = layer[i].weights.length;
+            let newWeights = weights.splice(0, count);
+            layer[i].setWeights(newWeights);
+        }
+    }
 }

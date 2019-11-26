@@ -19,7 +19,6 @@ function setup() {
     car.brain = new Brain(3,3,3,2);
     car.brain.initRandomWeights();
 
-
     boundries.push(new Boundry(100, 150, 500, 150));
     boundries.push(new Boundry(100, 50, 600, 50));
     boundries.push(new Boundry(500, 150, 500, 500));
@@ -75,9 +74,6 @@ function draw() {
     car.checkCheckPoints(checkPoints);
 
     car.useBrain();
-
-
-
 
     Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());
