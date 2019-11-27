@@ -39,7 +39,7 @@ class Player {
             this.car.pedalGas = 0;
         }
 
-        if (outputs[1] > 0.5) {
+        if (outputs[1] > 0.6) {
             this.car.turnLeft();
         } else {
             this.car.turnRight();

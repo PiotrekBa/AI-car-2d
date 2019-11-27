@@ -1,8 +1,7 @@
-let car;
 let boundries = [];
 let checkPoints = {};
 
-let player;
+let players = [];
 
 const conf = {
     dt: 0.2,
@@ -17,16 +16,22 @@ const conf = {
 
 function setup() {
     createCanvas(800, 800);
-    car = new Car(conf);
-    let brain = new Brain(3,3,3,2);
-    brain.initRandomWeights();
-
-    player = new Player(car, brain);
+    for (let i = 0; i < 1000; i++) {
+        let car = new Car(conf);
+        let brain = new Brain(3, 3, 3, 2);
+        brain.initRandomWeights();
+        players.push(new Player(car, brain));
+    }
 
     boundries.push(new Boundry(100, 150, 500, 150));
     boundries.push(new Boundry(100, 50, 600, 50));
     boundries.push(new Boundry(500, 150, 500, 500));
-    boundries.push(new Boundry(600, 50, 600, 500));
+    boundries.push(new Boundry(600, 50, 600, 600));
+    boundries.push(new Boundry(600, 600, 200, 600));
+    boundries.push(new Boundry(500, 500, 100, 500));
+    boundries.push(new Boundry(100, 500, 100, 750));
+    boundries.push(new Boundry(100, 750, 500, 700));
+    boundries.push(new Boundry(500, 600, 500, 700));
 
     checkPoints["1"] = new CheckPoint(150, 50, 150, 150);
     checkPoints["2"] = new CheckPoint(200, 50, 200, 150);
@@ -66,8 +71,13 @@ function draw() {
     // } else if (keyIsDown(RIGHT_ARROW)) {
     //     car.turnRight();
     // }
-
-    player.update(boundries, checkPoints);
+    for (let i = 0; i < players.length; i++) {
+        if(!players[i].car.collision) {
+            players[i].update(boundries, checkPoints);
+        } else {
+            players[i].car.show();
+        }
+    }
 
     Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());
