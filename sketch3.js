@@ -2,6 +2,8 @@ let car;
 let boundries = [];
 let checkPoints = {};
 
+let player;
+
 const conf = {
     dt: 0.2,
     posX: 100,
@@ -16,8 +18,10 @@ const conf = {
 function setup() {
     createCanvas(800, 800);
     car = new Car(conf);
-    car.brain = new Brain(3,3,3,2);
-    car.brain.initRandomWeights();
+    let brain = new Brain(3,3,3,2);
+    brain.initRandomWeights();
+
+    player = new Player(car, brain);
 
     boundries.push(new Boundry(100, 150, 500, 150));
     boundries.push(new Boundry(100, 50, 600, 50));
@@ -63,17 +67,7 @@ function draw() {
     //     car.turnRight();
     // }
 
-    car.update();
-    car.show();
-    car.calcDetection();
-    car.detectBoundries(boundries);
-    car.calcRecPoints();
-    car.calcCollision(boundries);
-    car.showDetection();
-    car.calcAxis();
-    car.checkCheckPoints(checkPoints);
-
-    car.useBrain();
+    player.update(boundries, checkPoints);
 
     Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());

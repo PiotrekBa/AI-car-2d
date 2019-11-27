@@ -133,6 +133,7 @@ class Car {
         translate(this.position.x, this.position.y);
         let dir = this.head.heading();
         rotate(dir);
+        fill('rgba(0,255,0, 0.25)')
         rect(-10, -5, 20, 10);
         pop();
     }
@@ -145,7 +146,6 @@ class Car {
 
     calcAxis() {
         this.axis = this.calcRaysVector(-10, 0, 20, 0);
-        this.axis.showLine();
     }
 
     checkCheckPoints(checkPoints) {
@@ -233,31 +233,6 @@ class Car {
 
     stop() {
         this.velocity.setMag(0);
-    }
-
-    useBrain() {
-        const dist1 = this.lRay.getDistance();
-        const dist2 = this.cRay.getDistance();
-        const dist3 = this.rRay.getDistance();
-
-        const inputs = [];
-        inputs.push(dist1/200);
-        inputs.push(dist2/200);
-        inputs.push(dist3/200);
-
-        const outputs = this.brain.deliverInputs(inputs);
-
-        if(outputs[0] > 0.5) {
-            this.pedalGas = 1;
-        } else {
-            this.pedalGas = 0;
-        }
-
-        if(outputs[1] > 0.5) {
-            this.turnLeft();
-        } else {
-            this.turnRight();
-        }
     }
 }
 
