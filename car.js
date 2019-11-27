@@ -42,8 +42,6 @@ class Car {
         this.collision = false;
 
         this.checkedPoints = new Set();
-
-        this.brain;
     }
 
     runForward(pedalGas) {

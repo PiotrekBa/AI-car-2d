@@ -1,7 +1,8 @@
 let boundries = [];
 let checkPoints = {};
-
-let players = [];
+let counter;
+let deathPlayers = [];
+let alivePlayers = []
 
 const conf = {
     dt: 0.2,
@@ -20,14 +21,16 @@ function setup() {
         let car = new Car(conf);
         let brain = new Brain(3, 3, 3, 2);
         brain.initRandomWeights();
-        players.push(new Player(car, brain));
+        alivePlayers.push(new Player(car, brain));
     }
+
+    counter = 0;
 
     boundries.push(new Boundry(100, 150, 500, 150));
     boundries.push(new Boundry(100, 50, 600, 50));
     boundries.push(new Boundry(500, 150, 500, 500));
     boundries.push(new Boundry(600, 50, 600, 600));
-    boundries.push(new Boundry(600, 600, 200, 600));
+    boundries.push(new Boundry(600, 600, 250, 600));
     boundries.push(new Boundry(500, 500, 100, 500));
     boundries.push(new Boundry(100, 500, 100, 750));
     boundries.push(new Boundry(100, 750, 500, 700));
@@ -71,11 +74,22 @@ function draw() {
     // } else if (keyIsDown(RIGHT_ARROW)) {
     //     car.turnRight();
     // }
-    for (let i = 0; i < players.length; i++) {
-        if(!players[i].car.collision) {
-            players[i].update(boundries, checkPoints);
+    if (counter <= 100) {
+        counter++;
+    }
+    textSize(32)
+    text(alivePlayers.length, 30, 30);
+
+    for (let i = 0; i < alivePlayers.length; i++) {
+        if (!alivePlayers[i].car.collision) {
+            alivePlayers[i].update(boundries, checkPoints);
+            if (counter >= 100 && alivePlayers[i].car.acceleration.mag() == 0) {
+                alivePlayers[i].car.collision = true;
+            }
         } else {
-            players[i].car.show();
+            let player = alivePlayers.splice(i,1)[0];
+            deathPlayers.push(player);
+            // players[i].car.show();
         }
     }
 

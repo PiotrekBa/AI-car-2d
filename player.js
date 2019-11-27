@@ -41,8 +41,12 @@ class Player {
 
         if (outputs[1] > 0.6) {
             this.car.turnLeft();
-        } else {
+        } else if (outputs[1] < 0.4){
             this.car.turnRight();
         }
+    }
+
+    getScore() {
+        return this.car.checkedPoints.size;
     }
 }
