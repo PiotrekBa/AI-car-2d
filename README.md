@@ -4,3 +4,5 @@ The purpose of the application is to create a car that learns to drive the selec
 - basic physics to simulate car drive
 - AI to run a track
 - genetic algorithms to improve car driving skill
+
+For graphic representation I use p5.js library.
