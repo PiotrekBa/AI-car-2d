@@ -12,12 +12,12 @@ const conf = {
     long: 20,
     engineForce: 1000,
     breakingForce: -800,
-    turnDelta: 0.3
+    turnDelta: 0.5
 }
 
 function setup() {
     createCanvas(800, 800);
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
         let brain = new Brain(3, 3, 3, 2);
         brain.initRandomWeights();

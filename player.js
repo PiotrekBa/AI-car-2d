@@ -33,8 +33,8 @@ class Player {
 
         const outputs = this.brain.deliverInputs(inputs);
 
-        if (outputs[0] > 0.5) {
-            this.car.pedalGas = 1;
+        if (outputs[0] > 0.2) {
+            this.car.pedalGas = outputs[0];
         } else {
             this.car.pedalGas = 0;
         }

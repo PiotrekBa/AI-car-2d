@@ -1,19 +1,19 @@
 class Brain {
     constructor(inputs, layer1, layer2, outputs) {
         this.inputs = inputs;
-        this.layer1 = this.createLayer(inputs,layer1);
+        this.layer1 = this.createLayer(inputs, layer1);
         this.layer2 = this.createLayer(layer1, layer2);
         this.outputs = this.createLayer(layer2, outputs);
     }
 
-    createLayer (inputs, nodes) {
+    createLayer(inputs, nodes) {
         let layer = [];
-        for(let i = 0; i < nodes; i++) {
+        for (let i = 0; i < nodes; i++) {
             layer.push(new Neuron(inputs));
         }
         return layer;
     }
-    
+
     initRandomWeights() {
         this.layer1 = this.prepareRandomWeightsForLayer(this.layer1);
         this.layer2 = this.prepareRandomWeightsForLayer(this.layer2);
@@ -21,13 +21,18 @@ class Brain {
     }
 
     prepareRandomWeightsForLayer(layer) {
-        for(let i = 0; i < layer.length; i++) {
+        for (let i = 0; i < layer.length; i++) {
             const weights = layer[i].weights.length;
-            for(let j = 0; j < weights; j++) {
-                layer[i].weights[j] = (Math.floor(Math.random()*20)/10-1);
+            for (let j = 0; j < weights; j++) {
+                layer[i].weights[j] = this.getRandomWeight();
             }
+            layer[i].bias = this.getRandomWeight();
         }
         return layer;
+    }
+
+    getRandomWeight() {
+        return Math.floor(Math.random() * 20) / 10 - 1;
     }
 
     deliverInputs(inputs) {
@@ -55,26 +60,28 @@ class Brain {
 
     getWeights(layer) {
         let w = [];
-        for(let i = 0; i < layer.length; i++) {
+        for (let i = 0; i < layer.length; i++) {
             const weights = layer[i].weights.length;
-            for(let j = 0; j < weights; j++) {
+            for (let j = 0; j < weights; j++) {
                 w.push(layer[i].weights[j]);
             }
+            w.push(layer[i].bias);
         }
         return w;
     }
 
     setWeights(weights) {
-       this.setWeightsToLayer(weights, this.layer1);
-       this.setWeightsToLayer(weights, this.layer2);
-       this.setWeightsToLayer(weights, this.outputs);
+        this.setWeightsToLayer(weights, this.layer1);
+        this.setWeightsToLayer(weights, this.layer2);
+        this.setWeightsToLayer(weights, this.outputs);
     }
 
     setWeightsToLayer(weights, layer) {
-        for(let i = 0; i < layer.length; i++) {
+        for (let i = 0; i < layer.length; i++) {
             let count = layer[i].weights.length;
             let newWeights = weights.splice(0, count);
-            layer[i].setWeights(newWeights);
+            let bias = weights.splice(0, 1)[0];
+            layer[i].setWeights(newWeights, bias);
         }
     }
 }
