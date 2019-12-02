@@ -5,6 +5,9 @@ let deathPlayers = [];
 let alivePlayers = [];
 
 let sim = false;
+let isprint = false;
+
+let generation = 1;
 
 const conf = {
     dt: 0.2,
@@ -19,7 +22,7 @@ const conf = {
 
 function setup() {
     createCanvas(800, 800);
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
         let brain = new Brain(3, 3, 3, 2);
         brain.initRandomWeights();
@@ -42,11 +45,12 @@ function setup() {
     boundries.push(new Boundry(750, 300, 650, 400));
     boundries.push(new Boundry(600, 300, 350, 300));
     boundries.push(new Boundry(650, 250, 600, 300));
-    boundries.push(new Boundry(650, 400, 500, 400));
+    boundries.push(new Boundry(650, 400, 450, 400));
     boundries.push(new Boundry(350, 300, 350, 500));
     boundries.push(new Boundry(350, 500, 650, 500));
     boundries.push(new Boundry(650, 500, 650, 400));
 
+    checkPoints["0"] = new CheckPoint(150, 50, 150, 150);
     checkPoints["1"] = new CheckPoint(250, 50, 250, 150);
     checkPoints["2"] = new CheckPoint(400, 100, 400, 200);
     checkPoints["3"] = new CheckPoint(550, 100, 550, 200);
@@ -87,6 +91,7 @@ function draw() {
     textSize(32)
     // text(alivePlayers.length, 30, 30);
     text("x = " + mouseX + " ; y = " + mouseY, 30, 30);
+    text(generation, 500, 30);
 
     if (sim) {
         for (let i = 0; i < alivePlayers.length; i++) {
@@ -103,6 +108,50 @@ function draw() {
         }
     }
 
+    if(alivePlayers.length === 0 && !isprint) {
+        deathPlayers.sort((a,b) => b.getScore() - a.getScore());
+        console.log("best - "  + deathPlayers[0].getScore());
+        isprint = true;
+        nextGeneration();
+        counter = 0;
+        generation++;
+    }
+
+
+
     Object.keys(checkPoints).forEach(k => checkPoints[k].show());
     boundries.forEach(b => b.show());
+}
+
+function nextGeneration() {
+    let b = deathPlayers.splice(0,70);
+    for(let i = 0; i < b.length; i++) {
+        let newWeights = mutate(b[i]);
+        let car = new Car(conf);
+        let brain = new Brain(3, 3, 3, 2);
+        brain.setWeights(newWeights);
+        alivePlayers.push(new Player(car, brain));;
+    }
+
+    for(let i = 0; i < 30; i++) {
+        let car = new Car(conf);
+        let brain = new Brain(3, 3, 3, 2);
+        brain.initRandomWeights();
+        alivePlayers.push(new Player(car, brain));
+    }
+
+    isprint = false;
+}
+
+function mutate(player) {
+    let weights = player.brain.getAllWeights();
+    for(let i = 0; i < weights.length; i++) {
+        const a = Math.random();
+        if(a < 0.3) {
+            weights[i] -= 0.1;
+        } else if (a > 0.7) {
+            weights[i] += 0.1;
+        }
+    }
+    return weights;
 }
