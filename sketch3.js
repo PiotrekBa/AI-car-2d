@@ -2,7 +2,9 @@ let boundries = [];
 let checkPoints = {};
 let counter;
 let deathPlayers = [];
-let alivePlayers = []
+let alivePlayers = [];
+
+let sim = false;
 
 const conf = {
     dt: 0.2,
@@ -17,7 +19,7 @@ const conf = {
 
 function setup() {
     createCanvas(800, 800);
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10000; i++) {
         let car = new Car(conf);
         let brain = new Brain(3, 3, 3, 2);
         brain.initRandomWeights();
@@ -26,32 +28,37 @@ function setup() {
 
     counter = 0;
 
-    boundries.push(new Boundry(100, 150, 500, 150));
-    boundries.push(new Boundry(100, 50, 600, 50));
-    boundries.push(new Boundry(500, 150, 500, 500));
-    boundries.push(new Boundry(600, 50, 600, 600));
-    boundries.push(new Boundry(600, 600, 250, 600));
-    boundries.push(new Boundry(500, 500, 100, 500));
-    boundries.push(new Boundry(100, 500, 100, 750));
-    boundries.push(new Boundry(100, 750, 500, 700));
-    boundries.push(new Boundry(500, 600, 500, 700));
+    boundries.push(new Boundry(100, 150, 250, 150));
+    boundries.push(new Boundry(100, 50, 250, 50));
+    boundries.push(new Boundry(250, 50, 400, 100));
+    boundries.push(new Boundry(250, 150, 400, 200));
+    boundries.push(new Boundry(400, 200, 550, 200));
+    boundries.push(new Boundry(400, 100, 550, 100));
+    boundries.push(new Boundry(650, 50, 550, 100));
+    boundries.push(new Boundry(550, 200, 650, 150));
+    boundries.push(new Boundry(650, 50, 750, 50));
+    boundries.push(new Boundry(650, 150, 650, 250));
+    boundries.push(new Boundry(750, 50, 750, 300));
+    boundries.push(new Boundry(750, 300, 650, 400));
+    boundries.push(new Boundry(600, 300, 350, 300));
+    boundries.push(new Boundry(650, 250, 600, 300));
+    boundries.push(new Boundry(650, 400, 500, 400));
+    boundries.push(new Boundry(350, 300, 350, 500));
+    boundries.push(new Boundry(350, 500, 650, 500));
+    boundries.push(new Boundry(650, 500, 650, 400));
 
-    checkPoints["1"] = new CheckPoint(150, 50, 150, 150);
-    checkPoints["2"] = new CheckPoint(200, 50, 200, 150);
-    checkPoints["3"] = new CheckPoint(250, 50, 250, 150);
-    checkPoints["4"] = new CheckPoint(300, 50, 300, 150);
-    checkPoints["5"] = new CheckPoint(350, 50, 350, 150);
-    checkPoints["6"] = new CheckPoint(400, 50, 400, 150);
-    checkPoints["7"] = new CheckPoint(450, 50, 450, 150);
-    checkPoints["8"] = new CheckPoint(500, 50, 500, 150);
-    checkPoints["9"] = new CheckPoint(600, 50, 500, 150);
-    checkPoints["10"] = new CheckPoint(600, 150, 500, 150);
-    checkPoints["11"] = new CheckPoint(600, 200, 500, 200);
-    checkPoints["12"] = new CheckPoint(600, 250, 500, 250);
-    checkPoints["13"] = new CheckPoint(600, 300, 500, 300);
-    checkPoints["14"] = new CheckPoint(600, 350, 500, 350);
-    checkPoints["15"] = new CheckPoint(600, 400, 500, 400);
-    checkPoints["16"] = new CheckPoint(600, 450, 500, 450);
+    checkPoints["1"] = new CheckPoint(250, 50, 250, 150);
+    checkPoints["2"] = new CheckPoint(400, 100, 400, 200);
+    checkPoints["3"] = new CheckPoint(550, 100, 550, 200);
+    checkPoints["4"] = new CheckPoint(650, 50, 650, 150);
+    checkPoints["5"] = new CheckPoint(650, 150, 750, 150);
+    checkPoints["6"] = new CheckPoint(650, 250, 750, 300);
+    checkPoints["7"] = new CheckPoint(600, 300, 650, 400);
+    checkPoints["8"] = new CheckPoint(500, 400, 500, 300);
+    checkPoints["9"] = new CheckPoint(500, 400, 350, 400);
+    checkPoints["10"] = new CheckPoint(500, 400, 500, 500);
+    checkPoints["11"] = new CheckPoint(600, 400, 600, 500);
+
 }
 
 function draw() {
@@ -78,18 +85,21 @@ function draw() {
         counter++;
     }
     textSize(32)
-    text(alivePlayers.length, 30, 30);
+    // text(alivePlayers.length, 30, 30);
+    text("x = " + mouseX + " ; y = " + mouseY, 30, 30);
 
-    for (let i = 0; i < alivePlayers.length; i++) {
-        if (!alivePlayers[i].car.collision) {
-            alivePlayers[i].update(boundries, checkPoints);
-            if (counter >= 100 && alivePlayers[i].car.acceleration.mag() == 0) {
-                alivePlayers[i].car.collision = true;
+    if (sim) {
+        for (let i = 0; i < alivePlayers.length; i++) {
+            if (!alivePlayers[i].car.collision) {
+                alivePlayers[i].update(boundries, checkPoints);
+                if (counter >= 100 && alivePlayers[i].car.acceleration.mag() == 0) {
+                    alivePlayers[i].car.collision = true;
+                }
+            } else {
+                let player = alivePlayers.splice(i, 1)[0];
+                deathPlayers.push(player);
+                // players[i].car.show();
             }
-        } else {
-            let player = alivePlayers.splice(i,1)[0];
-            deathPlayers.push(player);
-            // players[i].car.show();
         }
     }
 
