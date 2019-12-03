@@ -43,12 +43,12 @@ class Player {
             this.car.pedalGas = 0;
         }
 
-        if (outputs[1] > 0.5) {
-            const x = norm(outputs[1]-0.5, 0, 0.5)
-            this.car.turnLeft(1);
-        } else if (outputs[1] < 0.5){
-            const x = norm(outputs[1], 0, 0.5)
-            this.car.turnRight(1);
+        if (outputs[1] > 0.55) {
+            const x = norm(outputs[1]-0.55, 0, 0.45)
+            this.car.turnLeft(x);
+        } else if (outputs[1] < 0.45){
+            const x = norm(outputs[1], 0, 0.45)
+            this.car.turnRight(x);
         }
     }
 

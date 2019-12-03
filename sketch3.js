@@ -24,7 +24,7 @@ function setup() {
     createCanvas(800, 800);
     for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
-        let brain = new Brain(5, 5, 3, 2);
+        let brain = getNewBrain();
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
     }
@@ -133,16 +133,16 @@ function nextGeneration() {
     let w = b[0].brain.getAllWeights();
     
     let c = new Car(conf);
-    let br = new Brain(5, 5, 3, 2);
+    let br = getNewBrain();
     br.setWeights(w);
     
     
     alivePlayers.push(new Player(c, br));
 
-    for(let i = 0; i < 69; i++) {
+    for(let i = 0; i < 49; i++) {
         let newWeights = mutate(b[0]);
         let car = new Car(conf);
-        let brain = new Brain(5, 5, 3, 2);
+        let brain = getNewBrain();
         brain.setWeights(newWeights);
         alivePlayers.push(new Player(car, brain));
     }
@@ -150,17 +150,17 @@ function nextGeneration() {
 
     b = deathPlayers.splice(0,9);
 
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < 40; i++) {
         let newWeights = mutate(b[i%8]);
         let car = new Car(conf);
-        let brain = new Brain(5, 5, 3, 2);
+        let brain = getNewBrain();
         brain.setWeights(newWeights);
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 5; i++) {
+    for(let i = 0; i < 10; i++) {
         let car = new Car(conf);
-        let brain = new Brain(5, 5, 3, 2);
+        let brain = getNewBrain();
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
     }
@@ -172,13 +172,27 @@ function mutate(player) {
     let weights = player.brain.getAllWeights();
     for(let i = 0; i < weights.length; i++) {
         const a = Math.random();
-        if(a < 0.1) {
+        if(a < 0.05) {
             weights[i] -= 0.1;
-        } else if (a < 0.2) {
+        } else if (a < 0.1) {
             weights[i] += 0.1;
-        } else if(a < 0.25) {
-            weights[i] = Math.floor(Math.random() * 20) / 10 - 1;
+        } else if(a < 0.15) {
+            weights[i] = getRandomWeight();
         }
     }
     return weights;
+}
+
+function roundWeight(n,k) {
+    var factor = Math.pow(10, k+1);
+    n = Math.round(Math.round(n*factor)/10);
+    return n/(factor/10);
+}
+
+function getRandomWeight() {
+    return this.roundWeight(Math.random() * 2 - 1, 2);
+}
+
+function getNewBrain() {
+    return new Brain(5,5,6,2);
 }

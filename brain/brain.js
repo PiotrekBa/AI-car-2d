@@ -31,16 +31,22 @@ class Brain {
         return layer;
     }
 
+    roundWeight(n,k) {
+        var factor = Math.pow(10, k+1);
+        n = Math.round(Math.round(n*factor)/10);
+        return n/(factor/10);
+    }
+
     getRandomWeight() {
-        return Math.floor(Math.random() * 20) / 10 - 1;
+        return this.roundWeight(Math.random() * 2 - 1, 2);
     }
 
     deliverInputs(inputs) {
         this.layer1.forEach(n => n.prepareOutputs(inputs));
         const inputs2 = this.layer1.map(n => n.output);
 
-        this.layer1.forEach(n => n.prepareOutputs(inputs2));
-        const inputs3 = this.layer1.map(n => n.output);
+        this.layer2.forEach(n => n.prepareOutputs(inputs2));
+        const inputs3 = this.layer2.map(n => n.output);
 
         this.outputs.forEach(n => n.prepareOutputs(inputs3));
         return this.outputs.map(n => n.output);
