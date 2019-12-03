@@ -25,11 +25,15 @@ class Player {
         const dist1 = this.car.lRay.getDistance();
         const dist2 = this.car.cRay.getDistance();
         const dist3 = this.car.rRay.getDistance();
+        const dist4 = this.car.lcRay.getDistance();
+        const dist5 = this.car.rcRay.getDistance();
 
         const inputs = [];
         inputs.push(dist1 / 200);
         inputs.push(dist2 / 200);
         inputs.push(dist3 / 200);
+        inputs.push(dist4 / 200);
+        inputs.push(dist5 / 200);
 
         const outputs = this.brain.deliverInputs(inputs);
 
@@ -39,10 +43,12 @@ class Player {
             this.car.pedalGas = 0;
         }
 
-        if (outputs[1] > 0.6) {
-            this.car.turnLeft();
-        } else if (outputs[1] < 0.4){
-            this.car.turnRight();
+        if (outputs[1] > 0.5) {
+            const x = norm(outputs[1]-0.5, 0, 0.5)
+            this.car.turnLeft(1);
+        } else if (outputs[1] < 0.5){
+            const x = norm(outputs[1], 0, 0.5)
+            this.car.turnRight(1);
         }
     }
 

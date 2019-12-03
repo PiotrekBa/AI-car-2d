@@ -4,7 +4,7 @@ let counter;
 let deathPlayers = [];
 let alivePlayers = [];
 
-let sim = false;
+let sim = true;
 let isprint = false;
 
 let generation = 1;
@@ -17,14 +17,14 @@ const conf = {
     long: 20,
     engineForce: 1000,
     breakingForce: -800,
-    turnDelta: 0.5
+    turnDelta: 0.3
 }
 
 function setup() {
     createCanvas(800, 800);
     for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
-        let brain = new Brain(3, 3, 3, 2);
+        let brain = new Brain(5, 5, 3, 2);
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
     }
@@ -33,12 +33,12 @@ function setup() {
 
     boundries.push(new Boundry(100, 150, 250, 150));
     boundries.push(new Boundry(100, 50, 250, 50));
-    boundries.push(new Boundry(250, 50, 400, 100));
-    boundries.push(new Boundry(250, 150, 400, 200));
-    boundries.push(new Boundry(400, 200, 550, 200));
-    boundries.push(new Boundry(400, 100, 550, 100));
-    boundries.push(new Boundry(650, 50, 550, 100));
-    boundries.push(new Boundry(550, 200, 650, 150));
+    boundries.push(new Boundry(250, 50, 400, 150));
+    boundries.push(new Boundry(250, 150, 400, 250));
+    boundries.push(new Boundry(400, 250, 550, 250));
+    boundries.push(new Boundry(400, 150, 550, 150));
+    boundries.push(new Boundry(650, 50, 550, 150));
+    boundries.push(new Boundry(550, 250, 650, 150));
     boundries.push(new Boundry(650, 50, 750, 50));
     boundries.push(new Boundry(650, 150, 650, 250));
     boundries.push(new Boundry(750, 50, 750, 300));
@@ -56,8 +56,8 @@ function setup() {
 
     checkPoints["0"] = new CheckPoint(150, 50, 150, 150);
     checkPoints["1"] = new CheckPoint(250, 50, 250, 150);
-    checkPoints["2"] = new CheckPoint(400, 100, 400, 200);
-    checkPoints["3"] = new CheckPoint(550, 100, 550, 200);
+    checkPoints["2"] = new CheckPoint(400, 150, 400, 250);
+    checkPoints["3"] = new CheckPoint(550, 150, 550, 250);
     checkPoints["4"] = new CheckPoint(650, 50, 650, 150);
     checkPoints["5"] = new CheckPoint(650, 150, 750, 150);
     checkPoints["6"] = new CheckPoint(650, 250, 750, 300);
@@ -129,18 +129,38 @@ function draw() {
 }
 
 function nextGeneration() {
-    let b = deathPlayers.splice(0,70);
-    for(let i = 0; i < b.length; i++) {
-        let newWeights = mutate(b[i]);
+    let b = deathPlayers.splice(0,1);
+    let w = b[0].brain.getAllWeights();
+    
+    let c = new Car(conf);
+    let br = new Brain(5, 5, 3, 2);
+    br.setWeights(w);
+    
+    
+    alivePlayers.push(new Player(c, br));
+
+    for(let i = 0; i < 69; i++) {
+        let newWeights = mutate(b[0]);
         let car = new Car(conf);
-        let brain = new Brain(3, 3, 3, 2);
+        let brain = new Brain(5, 5, 3, 2);
         brain.setWeights(newWeights);
-        alivePlayers.push(new Player(car, brain));;
+        alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 30; i++) {
+
+    b = deathPlayers.splice(0,9);
+
+    for(let i = 0; i < 25; i++) {
+        let newWeights = mutate(b[i%8]);
         let car = new Car(conf);
-        let brain = new Brain(3, 3, 3, 2);
+        let brain = new Brain(5, 5, 3, 2);
+        brain.setWeights(newWeights);
+        alivePlayers.push(new Player(car, brain));
+    }
+
+    for(let i = 0; i < 5; i++) {
+        let car = new Car(conf);
+        let brain = new Brain(5, 5, 3, 2);
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
     }
@@ -152,10 +172,12 @@ function mutate(player) {
     let weights = player.brain.getAllWeights();
     for(let i = 0; i < weights.length; i++) {
         const a = Math.random();
-        if(a < 0.3) {
+        if(a < 0.1) {
             weights[i] -= 0.1;
-        } else if (a > 0.7) {
+        } else if (a < 0.2) {
             weights[i] += 0.1;
+        } else if(a < 0.25) {
+            weights[i] = Math.floor(Math.random() * 20) / 10 - 1;
         }
     }
     return weights;

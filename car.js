@@ -31,6 +31,9 @@ class Car {
         this.lRay;
         this.rRay;
         this.cRay;
+        this.lcRay;
+        this.rcRay;
+
 
         this.rectAB;
         this.rectBC;
@@ -89,26 +92,26 @@ class Car {
         }
     }
 
-    turnLeft() {
-        this.turn(-1);
+    turnLeft(deltaFactor) {
+        this.turn(-1, deltaFactor);
     }
 
-    turnRight() {
-        this.turn(1);
+    turnRight(deltaFactor) {
+        this.turn(1, deltaFactor);
     }
 
     noTurn() {
         this.turn(0);
     }
 
-    turn(dir) {
-        this.angle = this.calcAngle(dir);
+    turn(dir, deltaFactor) {
+        this.angle = this.calcAngle(dir, deltaFactor);
         this.rotateCar();
     }
 
-    calcAngle(dir) {
+    calcAngle(dir, deltaFactor=1) {
         if (dir != 0) {
-            let curveRadius = this.long / Math.sin(this.turnDelta) * dir;
+            let curveRadius = this.long / Math.sin(this.turnDelta*deltaFactor) * dir;
             return this.velocity.mag() / (curveRadius) * this.dt;
         }
         return 0;
@@ -138,6 +141,8 @@ class Car {
 
     calcDetection() {
         this.lRay = this.calcRaysVector(10, -5, 0, -200);
+        this.lcRay = this.calcRaysVector(10,-5, 200, -200)
+        this.rcRay = this.calcRaysVector(10,5, 200, 200);
         this.rRay = this.calcRaysVector(10, 5, 0, 200);
         this.cRay = this.calcRaysVector(10, 0, 200, 0);
     }
@@ -196,6 +201,8 @@ class Car {
         this.lRay.show();
         this.rRay.show();
         this.cRay.show();
+        this.lcRay.show();
+        this.rcRay.show();
     }
 
     prepareRotateVectorWithPosition(x, y) {
@@ -222,11 +229,9 @@ class Car {
             this.lRay.lookAt(b);
             this.rRay.lookAt(b);
             this.cRay.lookAt(b);
+            this.lcRay.lookAt(b);
+            this.rcRay.lookAt(b);
         }
-    }
-
-    getDistances() {
-        return this.lRay.getDistance();
     }
 
     stop() {
