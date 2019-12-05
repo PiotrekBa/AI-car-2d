@@ -138,6 +138,7 @@ function nextGeneration() {
     let w = b[0].brain.getAllWeights();
     
     let c = new Car(conf);
+    c.color = 'rgba(255,0,0, 0.25)'
     let br = getNewBrain();
     br.setWeights(w);
     

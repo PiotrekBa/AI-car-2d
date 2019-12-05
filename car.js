@@ -43,7 +43,7 @@ class Car {
         this.axis;
 
         this.collision = false;
-
+        this.color = 'rgba(0, 255 ,0, 0.25)';
         this.checkedPoints = new Set();
     }
 
@@ -134,7 +134,7 @@ class Car {
         translate(this.position.x, this.position.y);
         let dir = this.head.heading();
         rotate(dir);
-        fill('rgba(0,255,0, 0.25)')
+        fill(this.color);
         rect(-10, -5, 20, 10);
         pop();
     }
