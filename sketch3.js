@@ -114,7 +114,12 @@ function draw() {
     }
 
     if(alivePlayers.length === 0 && !isprint) {
-        deathPlayers.sort((a,b) => b.getScore() - a.getScore());
+        deathPlayers.sort((a,b) => {
+            if(b.getScore() === a.getScore()) {
+                return a.timer - b.timer;
+            }
+            return b.getScore() - a.getScore();
+        });
         console.log("best - "  + deathPlayers[0].getScore());
         isprint = true;
         nextGeneration();

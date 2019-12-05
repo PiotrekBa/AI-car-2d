@@ -2,11 +2,13 @@ class Player {
     constructor(car, brain) {
         this.car = car;
         this.brain = brain;
+        this.timer = 0;
     }
 
     update(boundries, checkPoints) {
         this.carUpdate(boundries, checkPoints);
         this.useBrain();
+        this.updateTimer();
     }
 
     carUpdate(boundries, checkPoints) {
@@ -49,6 +51,12 @@ class Player {
         } else if (outputs[1] < 0.4){
             const x = norm(outputs[1], 0, 0.45)
             this.car.turnRight(1);
+        }
+    }
+
+    updateTimer() {
+        if(!this.car.collision) {
+            this.timer += this.car.dt;
         }
     }
 
