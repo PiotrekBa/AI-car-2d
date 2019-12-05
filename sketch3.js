@@ -139,8 +139,24 @@ function nextGeneration() {
     
     alivePlayers.push(new Player(c, br));
 
-    for(let i = 0; i < 49; i++) {
-        let newWeights = mutate(b[0]);
+    for(let i = 0; i < 29; i++) {
+        let newWeights = mutate(b[0], 2);
+        let car = new Car(conf);
+        let brain = getNewBrain();
+        brain.setWeights(newWeights);
+        alivePlayers.push(new Player(car, brain));
+    }
+
+    for(let i = 0; i < 20; i++) {
+        let newWeights = mutate(b[0], 1);
+        let car = new Car(conf);
+        let brain = getNewBrain();
+        brain.setWeights(newWeights);
+        alivePlayers.push(new Player(car, brain));
+    }
+
+    for(let i = 0; i < 20; i++) {
+        let newWeights = mutate(b[0], 0.5);
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.setWeights(newWeights);
@@ -148,17 +164,17 @@ function nextGeneration() {
     }
 
 
-    b = deathPlayers.splice(0,9);
+    b = deathPlayers.splice(0,4);
 
-    for(let i = 0; i < 40; i++) {
-        let newWeights = mutate(b[i%8]);
+    for(let i = 0; i < 20; i++) {
+        let newWeights = mutate(b[i%4]);
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.setWeights(newWeights);
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 10; i++) {
+    for(let i = 0; i < 0; i++) {
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.initRandomWeights();
@@ -168,15 +184,15 @@ function nextGeneration() {
     isprint = false;
 }
 
-function mutate(player) {
+function mutate(player, change) {
     let weights = player.brain.getAllWeights();
     for(let i = 0; i < weights.length; i++) {
         const a = Math.random();
-        if(a < 0.05) {
-            weights[i] -= 0.1;
-        } else if (a < 0.1) {
-            weights[i] += 0.1;
-        } else if(a < 0.15) {
+        if(a < 0.2) {
+            weights[i] -= change;
+        } else if (a < 0.4) {
+            weights[i] += change;
+        } else if(a < 0.5) {
             weights[i] = getRandomWeight();
         }
     }
@@ -194,5 +210,5 @@ function getRandomWeight() {
 }
 
 function getNewBrain() {
-    return new Brain(5,5,6,2);
+    return new Brain(5,6,4,2);
 }
