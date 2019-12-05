@@ -179,13 +179,13 @@ function nextGeneration() {
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 0; i++) {
+    for(let i = 0; i < 10; i++) {
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
     }
-
+    deathPlayers = [];
     isprint = false;
 }
 
