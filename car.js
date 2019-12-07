@@ -153,8 +153,7 @@ class Car {
 
     checkCheckPoints(checkPoints) {
         const axis = this.axis;
-        for (let k of Object.keys(checkPoints)) {
-            const v = checkPoints[k];
+        for (let [k,v] of checkPoints) {
             if (!this.checkedPoints.has(k)) {
                 if (CollisionService.isLinesIntersection(axis.pos.x, axis.pos.y,
                     axis.dir.x, axis.dir.y, v.x1, v.y1, v.x2, v.y2)) {
