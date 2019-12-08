@@ -23,7 +23,7 @@ const conf = {
 }
 
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(900, 900);
 
     chartService = new ChartService(30, 650);
     for (let i = 0; i < 100; i++) {
@@ -125,15 +125,16 @@ function draw() {
             return b.getScore() - a.getScore();
         });
         const bestScore = deathPlayers[0].getScore();
+        const brain = deathPlayers[0].brain;
         isprint = true;
         nextGeneration();
         counter = 0;
         generation++;
+        chartService.brain = brain;
         chartService.calculateScore(bestScore, checkPoints.size);
     }
 
     chartService.draw();
-
     checkPoints.forEach(v => v.show());
     boundries.forEach(b => b.show());
 }
