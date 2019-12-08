@@ -98,7 +98,7 @@ class ChartService {
                 let point1 = centers2[i];
                 let point2 = centers1[j];
                 weightsLines.push(
-                    new WeightLine(point1.x, point1.y, point2.x, point2.y, weights[j]*2));
+                    new WeightLine(point1.x, point1.y, point2.x, point2.y, weights[j]));
             }
         }
         return weightsLines;
@@ -120,8 +120,12 @@ class WeightLine {
 
     draw() {
         push();
-        strokeWeight(this.weight);
-        stroke(200,0,0);
+        if(this.weight < 0) {
+            stroke(0,0,200);
+        } else {
+            stroke(200,0,0);
+        }
+        strokeWeight(Math.abs(this.weight));
         line(this.x1, this.y1, this.x2, this.y2);
         pop();
     }
