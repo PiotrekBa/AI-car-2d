@@ -49,10 +49,10 @@ class ChartService {
         rect(0, 0, w, h);
         let wd = w / 4;
 
-        let centersI = this.getCirclesLayerCenter(this.brain.inputs, wd / 2, h);
-        let centersL1 = this.getCirclesLayerCenter(this.brain.layer1.length, wd * 1.5, h);
-        let centersL2 = this.getCirclesLayerCenter(this.brain.layer2.length, wd * 2.5, h);
-        let centersO = this.getCirclesLayerCenter(this.brain.outputs.length, wd * 3.5, h);
+        let centersI = this.getCirclesLayerCenter(this.brain.inputs, wd / 2, h, false);
+        let centersL1 = this.getCirclesLayerCenter(this.brain.layer1, wd * 1.5, h, true);
+        let centersL2 = this.getCirclesLayerCenter(this.brain.layer2, wd * 2.5, h, true);
+        let centersO = this.getCirclesLayerCenter(this.brain.outputs, wd * 3.5, h, true);
 
 
         let wl = this.prepareWeightLine(centersI, centersL1, this.brain.layer1);
@@ -75,18 +75,27 @@ class ChartService {
         pop();
     }
 
-    getCirclesLayerCenter(nodes, wd, h) {
-        let hd = h / nodes;
+    getCirclesLayerCenter(nodes, wd, h, areNeurons) {
+        let nodesCount;
+        if(areNeurons) {
+            nodesCount = nodes.length;
+        } else {
+            nodesCount = nodes;
+        }
+        let hd = h / nodesCount;
         let centers = [];
-        for (let i = 0; i < nodes; i++) {
-            centers.push(new p5.Vector(wd, hd * i + hd / 2));
+        for (let i = 0; i < nodesCount; i++) {
+            let bias = areNeurons ? nodes[i].bias : null;
+            const circle = new NeuronCircle(wd, hd * i + hd / 2, bias); 
+            circle.calcWeightAndColor();
+            centers.push(circle);
         }
         return centers;
     }
 
     drawCircle(centers, radius) {
         for (let i = 0; i < centers.length; i++) {
-            ellipse(centers[i].x, centers[i].y, radius);
+            centers[i].draw(radius);
         }
     }
 
@@ -128,5 +137,37 @@ class WeightLine {
         strokeWeight(Math.abs(this.weight));
         line(this.x1, this.y1, this.x2, this.y2);
         pop();
+    }
+}
+
+class NeuronCircle {
+    constructor(x, y, weight) {
+        this.x = x;
+        this.y = y;
+        this.weight = weight;
+        this.color;
+    }
+
+    draw(radius) {
+        push();
+        stroke(this.color);
+        fill(230);
+        strokeWeight(this.weight);
+        ellipse(this.x, this.y, radius);
+        pop();
+    }
+
+    calcWeightAndColor() {
+        if(this.weight) {
+            if (this.weight < 0) {
+                this.color = color(0,0,200);
+                this.weight = Math.abs(this.weight);
+            } else {
+                this.color = color(200,0,0);
+            }
+        } else {
+            this.color = color(0,0,0);
+            this.weight = 2;
+        }
     }
 }

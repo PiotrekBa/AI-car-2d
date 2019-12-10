@@ -47,10 +47,10 @@ class Player {
 
         if (outputs[1] > 0.6) {
             const x = norm(outputs[1]-0.55, 0, 0.45)
-            this.car.turnLeft(x);
+            this.car.turnLeft(1);
         } else if (outputs[1] < 0.4){
             const x = norm(outputs[1], 0, 0.45)
-            this.car.turnRight(x);
+            this.car.turnRight(1);
         }
     }
 
