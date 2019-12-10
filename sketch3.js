@@ -130,7 +130,7 @@ function draw() {
         nextGeneration();
         counter = 0;
         generation++;
-        chartService.brain = brain;
+        chartService.calculateChartBrainElements(brain);
         chartService.calculateScore(bestScore, checkPoints.size);
     }
 
