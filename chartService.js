@@ -8,6 +8,7 @@ class ChartService {
         this.brainChartWidth = 400;
         this.brainChartHeight = 250;
         this.chartBrainElements = [];
+        this.progressVals = [];
     }
 
     calculateScore(actualCP, allCPs) {
@@ -44,6 +45,12 @@ class ChartService {
         }
     }
 
+    addNewTimeValueIfTrackFinished(time) {
+        if(this.score === 100) {
+            this.progressVals.push(time);
+        }
+    }
+
     draw() {
         this.drawCheckPointBar();
         this.drawBrain();
@@ -74,9 +81,14 @@ class ChartService {
         push();
         translate(this.x + 120, this.y);
         strokeWeight(1);
-        stroke(51)
+        stroke(51);
         rect(0, 0, w, h);
-        this.chartBrainElements.forEach(e => e.draw());
+        if(this.chartBrainElements.length === 0) {
+            textSize(16);
+            text('Data shows after first generation', 80,130);
+        } else {
+            this.chartBrainElements.forEach(e => e.draw());
+        }
         pop();
     }
 
@@ -120,7 +132,35 @@ class ChartService {
     }
 
     drawProgressChart() {
-
+        push();
+        translate(this.x + 530, this.y);
+        strokeWeight(1);
+        stroke(51)
+        rect(0,0,300, 250);
+        const len = this.progressVals.length;
+        if(len === 0) {
+            textSize(16);
+            text('Data shows after finish track', 50, 130);
+        } else {
+            const columnWidth = 300 / len;
+            let chartStart = 0;
+            const maxValue = this.progressVals[0];
+            let prevValue;
+            for(let i = 0; i < len; i++) {
+                const columnHeight = norm(this.progressVals[i], 0, maxValue) * 150;
+                
+                if(prevValue && prevValue > this.progressVals[i]) {
+                    fill(11,102, 35);
+                } else {
+                    fill(249,215,28);
+                }
+                noStroke();
+                rect(chartStart, 250 - columnHeight, columnWidth, columnHeight);
+                chartStart += columnWidth;
+                prevValue = this.progressVals[i];
+            }
+        }
+        pop();
     }
 }
 

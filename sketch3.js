@@ -126,12 +126,14 @@ function draw() {
         });
         const bestScore = deathPlayers[0].getScore();
         const brain = deathPlayers[0].brain;
+        const time = deathPlayers[0].timer;
         isprint = true;
         nextGeneration();
         counter = 0;
         generation++;
         chartService.calculateChartBrainElements(brain);
         chartService.calculateScore(bestScore, checkPoints.size);
+        chartService.addNewTimeValueIfTrackFinished(time);
     }
 
     chartService.draw();
