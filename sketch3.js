@@ -23,9 +23,9 @@ const conf = {
 }
 
 function setup() {
-    createCanvas(900, 900);
+    createCanvas(1100, 920);
 
-    chartService = new ChartService(30, 650);
+    chartService = new ChartService(30, 660);
     for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
         let brain = getNewBrain();

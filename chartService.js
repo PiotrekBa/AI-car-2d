@@ -46,32 +46,42 @@ class ChartService {
     }
 
     addNewTimeValueIfTrackFinished(time) {
-        if(this.score === 100) {
+        if (this.score === 100) {
             this.progressVals.push(time);
         }
     }
 
     draw() {
+        this.drawTopLine();
         this.drawCheckPointBar();
         this.drawBrain();
         this.drawProgressChart();
     }
 
+    drawTopLine() {
+        push();
+        translate(0, this.y - 20);
+        line(0, 0, width, 0);
+        pop();
+    }
+
     drawCheckPointBar() {
         push();
         translate(this.x, this.y);
+        textSize(16);
+        text('Progress bar', 5, 0);
         noStroke();
         fill(0, 255, 0);
-        rect(0, 0, this.score, 18);
+        rect(0, 10, this.score, 18);
         noFill();
         strokeWeight(4);
         stroke(51);
-        rect(0, 0, 100, 20);
+        rect(0, 10, 100, 20);
         fill(50);
         strokeWeight(1);
         textFont('Helvetica');
         textSize(16);
-        text(this.scoreText, 0, 40);
+        text(this.scoreText, 0, 50);
         pop();
     }
 
@@ -80,12 +90,15 @@ class ChartService {
         const h = this.brainChartHeight;
         push();
         translate(this.x + 120, this.y);
+        textSize(16);
+        text('Best player neural network visualisation', 60, 0);
         strokeWeight(1);
         stroke(51);
+        translate(0, 5);
         rect(0, 0, w, h);
-        if(this.chartBrainElements.length === 0) {
+        if (this.chartBrainElements.length === 0) {
             textSize(16);
-            text('Data shows after first generation', 80,130);
+            text('Data shows after first generation', 80, 130);
         } else {
             this.chartBrainElements.forEach(e => e.draw());
         }
@@ -134,31 +147,48 @@ class ChartService {
     drawProgressChart() {
         push();
         translate(this.x + 530, this.y);
+        textSize(16);
+        text('Progress chart for finish players', 80, 0);
         strokeWeight(1);
         stroke(51)
-        rect(0,0,300, 250);
+        translate(0, 5);
+        rect(0, 0, 400, 250);
         const len = this.progressVals.length;
-        if(len === 0) {
+        let lastProgress = 0;
+        if (len === 0) {
             textSize(16);
-            text('Data shows after finish track', 50, 130);
+            text('Data shows after finish track', 100, 130);
         } else {
-            const columnWidth = 300 / len;
+            const columnWidth = 400 / len;
             let chartStart = 0;
             const maxValue = this.progressVals[0];
             let prevValue;
-            for(let i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 const columnHeight = norm(this.progressVals[i], 0, maxValue) * 150;
-                
-                if(prevValue && prevValue > this.progressVals[i]) {
-                    fill(11,102, 35);
+
+                if (prevValue && prevValue > this.progressVals[i]) {
+                    fill(11, 102, 35);
+                    lastProgress = 0;
                 } else {
-                    fill(249,215,28);
+                    fill(249, 215, 28);
+                    lastProgress += 1;
                 }
                 noStroke();
                 rect(chartStart, 250 - columnHeight, columnWidth, columnHeight);
                 chartStart += columnWidth;
                 prevValue = this.progressVals[i];
             }
+        }
+        if(len > 0) {
+            const firstTime = this.progressVals[0];
+            const lastTime = this.progressVals[len-1];
+            let progress = (firstTime / lastTime -1)* 100;
+            progress = roundWeight(progress, 2);
+            textSize(16);
+            fill(11, 102, 35);
+            text('Progress ' + progress + '%', 410, 20);
+            fill(0);
+            text('Last progr. :' + lastProgress + ' gen.', 410, 40);
         }
         pop();
     }
