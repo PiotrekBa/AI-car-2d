@@ -21,4 +21,6 @@ class SettingService {
 - widoczność auta
 - sposób mutacji
 - start/stop
+- precyzyjna mutacja po dojechaniu do mety
+- 
 */
