@@ -11,6 +11,8 @@ let isprint = false;
 
 let generation = 1;
 
+let killButton;
+
 const conf = {
     dt: 0.2,
     posX: 100,
@@ -54,7 +56,7 @@ function setup() {
 
     boundries.push(new Boundry(450, 400, 450, 500));
     boundries.push(new Boundry(450, 500, 650, 500));
-    
+
     boundries.push(new Boundry(350, 600, 650, 600));
     boundries.push(new Boundry(650, 500, 650, 600));
 
@@ -72,6 +74,9 @@ function setup() {
     checkPoints.set(11, new CheckPoint(500, 600, 500, 500));
     checkPoints.set(12, new CheckPoint(600, 500, 600, 600));
 
+    killButton = createButton('Kill');
+    killButton.position(30, 550);
+    killButton.mousePressed(killAllPlayers);
 }
 
 function draw() {
@@ -112,14 +117,13 @@ function draw() {
             } else {
                 let player = alivePlayers.splice(i, 1)[0];
                 deathPlayers.push(player);
-                // players[i].car.show();
             }
         }
     }
 
-    if(alivePlayers.length === 0 && !isprint) {
-        deathPlayers.sort((a,b) => {
-            if(b.getScore() === a.getScore()) {
+    if (alivePlayers.length === 0 && !isprint) {
+        deathPlayers.sort((a, b) => {
+            if (b.getScore() === a.getScore()) {
                 return a.timer - b.timer;
             }
             return b.getScore() - a.getScore();
@@ -142,18 +146,18 @@ function draw() {
 }
 
 function nextGeneration() {
-    let b = deathPlayers.splice(0,1);
+    let b = deathPlayers.splice(0, 1);
     let w = b[0].brain.getAllWeights();
-    
+
     let c = new Car(conf);
     c.color = 'rgba(255,0,0, 0.25)'
     let br = getNewBrain();
     br.setWeights(w);
-    
-    
+
+
     alivePlayers.push(new Player(c, br));
 
-    for(let i = 0; i < 29; i++) {
+    for (let i = 0; i < 29; i++) {
         let newWeights = mutate(b[0], 2);
         let car = new Car(conf);
         let brain = getNewBrain();
@@ -161,7 +165,7 @@ function nextGeneration() {
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         let newWeights = mutate(b[0], 1);
         let car = new Car(conf);
         let brain = getNewBrain();
@@ -169,7 +173,7 @@ function nextGeneration() {
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         let newWeights = mutate(b[0], 0.5);
         let car = new Car(conf);
         let brain = getNewBrain();
@@ -178,17 +182,17 @@ function nextGeneration() {
     }
 
 
-    b = deathPlayers.splice(0,4);
+    b = deathPlayers.splice(0, 4);
 
-    for(let i = 0; i < 20; i++) {
-        let newWeights = mutate(b[i%4]);
+    for (let i = 0; i < 20; i++) {
+        let newWeights = mutate(b[i % 4]);
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.setWeights(newWeights);
         alivePlayers.push(new Player(car, brain));
     }
 
-    for(let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         let car = new Car(conf);
         let brain = getNewBrain();
         brain.initRandomWeights();
@@ -200,23 +204,23 @@ function nextGeneration() {
 
 function mutate(player, change) {
     let weights = player.brain.getAllWeights();
-    for(let i = 0; i < weights.length; i++) {
+    for (let i = 0; i < weights.length; i++) {
         const a = Math.random();
-        if(a < 0.2) {
+        if (a < 0.2) {
             weights[i] -= change;
         } else if (a < 0.4) {
             weights[i] += change;
-        } else if(a < 0.5) {
+        } else if (a < 0.5) {
             weights[i] = getRandomWeight();
         }
     }
     return weights;
 }
 
-function roundWeight(n,k) {
-    var factor = Math.pow(10, k+1);
-    n = Math.round(Math.round(n*factor)/10);
-    return n/(factor/10);
+function roundWeight(n, k) {
+    var factor = Math.pow(10, k + 1);
+    n = Math.round(Math.round(n * factor) / 10);
+    return n / (factor / 10);
 }
 
 function getRandomWeight() {
@@ -224,5 +228,11 @@ function getRandomWeight() {
 }
 
 function getNewBrain() {
-    return new Brain(5,6,4,2);
+    return new Brain(5, 6, 4, 2);
+}
+
+function killAllPlayers() {
+    deathPlayers.push(alivePlayers);
+    deathPlayers = deathPlayers.flat();
+    alivePlayers = [];
 }
