@@ -5,8 +5,9 @@ let deathPlayers = [];
 let alivePlayers = [];
 
 let chartService;
+let settingService;
 
-let sim = true;
+let sim = false;
 let isprint = false;
 
 let generation = 1;
@@ -28,6 +29,8 @@ function setup() {
     createCanvas(1100, 920);
 
     chartService = new ChartService(30, 660);
+    settingService = new SettingService(800,0,0, 640);
+
     for (let i = 0; i < 100; i++) {
         let car = new Car(conf);
         let brain = getNewBrain();
@@ -141,6 +144,7 @@ function draw() {
     }
 
     chartService.draw();
+    settingService.draw();
     checkPoints.forEach(v => v.show());
     boundries.forEach(b => b.show());
 }
