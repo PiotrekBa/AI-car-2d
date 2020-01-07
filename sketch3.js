@@ -43,7 +43,7 @@ function setup() {
 
     chartService = new ChartService(30, 660);
     settingService = new SettingService(800,0,0, 640);
-    mutationservice = new MutationService(mutateConf, carConf, getNewBrain);
+    mutationservice = new MutationService(mutateConf, carConf);
 
     for (let i = 0; i < 100; i++) {
         let car = new Car(carConf);
@@ -149,7 +149,6 @@ function draw() {
         const bestScore = allPlayers[0].getScore();
         const brain = allPlayers[0].brain;
         const time = allPlayers[0].timer;
-        // nextGeneration();
         alivePlayers = mutationservice.getNextGeneration(allPlayers);
         deathPlayers = [];
         counter = 0;
@@ -163,6 +162,16 @@ function draw() {
     settingService.draw();
     checkPoints.forEach(v => v.show());
     boundries.forEach(b => b.show());
+}
+
+function roundWeight(n, k) {
+    var factor = Math.pow(10, k + 1);
+    n = Math.round(Math.round(n * factor) / 10);
+    return n / (factor / 10);
+}
+
+function getRandomWeight() {
+    return this.roundWeight(Math.random() * 2 - 1, 2);
 }
 
 function getNewBrain() {

@@ -1,8 +1,7 @@
 class MutationService {
-    constructor(conf, carConf, newBrainFc) {
+    constructor(conf, carConf) {
         this.conf = conf;
         this.carConf = carConf;
-        this.newBrainFc = newBrainFc;
     }
 
     getNextGeneration(allPlayers) {
@@ -11,7 +10,7 @@ class MutationService {
 
         let newBestCar = new Car(this.carConf);
         newBestCar.color = 'rgba(255,0,0, 0.25)'
-        let newBestBrain = this.newBrainFc();
+        let newBestBrain = getNewBrain();
         newBestBrain.setWeights(bestWeights);
 
         let newPlayers = [];
@@ -47,7 +46,7 @@ class MutationService {
     getMutatePlayer(player, change) {
         let newWeights = this.mutate(player, change);
         let car = new Car(this.carConf);
-        let brain = this.newBrainFc();
+        let brain = getNewBrain();
         brain.setWeights(newWeights);
         return new Player(car, brain);
     }
@@ -56,7 +55,7 @@ class MutationService {
         let newPlayers = [];
         for (let i = 0; i < amount; i++) {
             let car = new Car(this.carConf);
-            let brain = this.newBrainFc();
+            let brain = getNewBrain();
             brain.initRandomWeights();
             newPlayers.push(new Player(car, brain));
         }
@@ -72,19 +71,9 @@ class MutationService {
             } else if (mutateChance < 0.4) {
                 weights[i] += change;
             } else if (mutateChance < 0.5) {
-                weights[i] = this.getRandomWeight();
+                weights[i] = getRandomWeight();
             }
         }
         return weights;
-    }
-
-    getRandomWeight() {
-        return this.roundWeight(Math.random() * 2 - 1, 2);
-    }
-
-    roundWeight(n, k) {
-        var factor = Math.pow(10, k + 1);
-        n = Math.round(Math.round(n * factor) / 10);
-        return n / (factor / 10);
     }
 }
