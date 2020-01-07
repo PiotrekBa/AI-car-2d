@@ -3,10 +3,11 @@ let checkPoints = new Map();
 let counter;
 let deathPlayers = [];
 let alivePlayers = [];
+const playersAmount = 50;
 
 let chartService;
 let settingService;
-let mutationservice;
+let mutationService;
 
 let sim = true;
 let isprint = false;
@@ -43,9 +44,9 @@ function setup() {
 
     chartService = new ChartService(30, 660);
     settingService = new SettingService(800,0,0, 640);
-    mutationservice = new MutationService(mutateConf, carConf);
+    mutationService = new MutationService(mutateConf, carConf, playersAmount);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < playersAmount; i++) {
         let car = new Car(carConf);
         let brain = getNewBrain();
         brain.initRandomWeights();
@@ -149,7 +150,7 @@ function draw() {
         const bestScore = allPlayers[0].getScore();
         const brain = allPlayers[0].brain;
         const time = allPlayers[0].timer;
-        alivePlayers = mutationservice.getNextGeneration(allPlayers);
+        alivePlayers = mutationService.getNextGeneration(allPlayers);
         deathPlayers = [];
         counter = 0;
         generation++;

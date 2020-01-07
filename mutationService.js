@@ -1,7 +1,8 @@
 class MutationService {
-    constructor(conf, carConf) {
+    constructor(conf, carConf, playersAmount) {
         this.conf = conf;
         this.carConf = carConf;
+        this.playersAmount = playersAmount;
     }
 
     getNextGeneration(allPlayers) {
@@ -22,20 +23,22 @@ class MutationService {
         let restBestPlayers = allPlayers.splice(0, this.conf.restPlayers);
         newPlayers.push(this.getMutateRestPlayer(restBestPlayers, this.conf.restPlayersAmount, this.conf.midChange));
 
-        newPlayers.push(this.getRandomPlayers(this.conf.randomAmount));
+        newPlayers.push(this.getRandomPlayers(this.playersAmount - newPlayers.flat().length));
         return newPlayers.flat();
     }
 
-    getMutateNewPlayers(player, amount, change) {
-        let newPlayers = []
+    getMutateNewPlayers(player, percent, change) {
+        let newPlayers = [];
+        const amount = this.calcAmount(percent);
         for (let i = 0; i < amount; i++) {
             newPlayers.push(this.getMutatePlayer(player, change));
         }
         return newPlayers;
     }
 
-    getMutateRestPlayer(players, amount, change) {
+    getMutateRestPlayer(players, percent, change) {
         let newPlayers = [];
+        const amount = this.calcAmount(percent);
         const modulo = players.length;
         for (let i = 0; i < amount; i++) {
             newPlayers.push(this.getMutatePlayer(players[i % modulo], change));
@@ -49,6 +52,10 @@ class MutationService {
         let brain = getNewBrain();
         brain.setWeights(newWeights);
         return new Player(car, brain);
+    }
+
+    calcAmount(percent) {
+        return roundWeight(this.playersAmount*percent/100, 0);
     }
 
     getRandomPlayers(amount) {
