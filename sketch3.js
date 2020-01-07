@@ -3,7 +3,7 @@ let checkPoints = new Map();
 let counter;
 let deathPlayers = [];
 let alivePlayers = [];
-const playersAmount = 50;
+const playersAmount = 100;
 
 let chartService;
 let settingService;
@@ -123,7 +123,7 @@ function draw() {
     textSize(32)
     // text(alivePlayers.length, 30, 30);
     text("x = " + mouseX + " ; y = " + mouseY, 30, 30);
-    text(generation, 500, 30);
+    text('Gen: ' + generation, 500, 30);
 
     if (sim) {
         for (let i = 0; i < alivePlayers.length; i++) {
