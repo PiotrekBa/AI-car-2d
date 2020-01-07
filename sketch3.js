@@ -6,15 +6,16 @@ let alivePlayers = [];
 
 let chartService;
 let settingService;
+let mutationservice;
 
-let sim = false;
+let sim = true;
 let isprint = false;
 
 let generation = 1;
 
 let killButton;
 
-const conf = {
+const carConf = {
     dt: 0.2,
     posX: 100,
     posY: 100,
@@ -25,14 +26,27 @@ const conf = {
     turnDelta: 0.3
 }
 
+const mutateConf = {
+    roughAmount: 19,
+    midAmount: 20,
+    precAmount: 30,
+    restPlayersAmount: 20,
+    randomAmount: 10,
+    roughChange: 2,
+    midChange: 1,
+    precChange: 0.5,
+    restPlayers: 4
+}
+
 function setup() {
     createCanvas(1100, 920);
 
     chartService = new ChartService(30, 660);
     settingService = new SettingService(800,0,0, 640);
+    mutationservice = new MutationService(mutateConf, carConf, getNewBrain);
 
     for (let i = 0; i < 100; i++) {
-        let car = new Car(conf);
+        let car = new Car(carConf);
         let brain = getNewBrain();
         brain.initRandomWeights();
         alivePlayers.push(new Player(car, brain));
@@ -124,18 +138,20 @@ function draw() {
         }
     }
 
-    if (alivePlayers.length === 0 && !isprint) {
+    if (alivePlayers.length === 0) {
         deathPlayers.sort((a, b) => {
             if (b.getScore() === a.getScore()) {
                 return a.timer - b.timer;
             }
             return b.getScore() - a.getScore();
         });
-        const bestScore = deathPlayers[0].getScore();
-        const brain = deathPlayers[0].brain;
-        const time = deathPlayers[0].timer;
-        isprint = true;
-        nextGeneration();
+        let allPlayers = [...deathPlayers];
+        const bestScore = allPlayers[0].getScore();
+        const brain = allPlayers[0].brain;
+        const time = allPlayers[0].timer;
+        // nextGeneration();
+        alivePlayers = mutationservice.getNextGeneration(allPlayers);
+        deathPlayers = [];
         counter = 0;
         generation++;
         chartService.calculateChartBrainElements(brain);
@@ -147,88 +163,6 @@ function draw() {
     settingService.draw();
     checkPoints.forEach(v => v.show());
     boundries.forEach(b => b.show());
-}
-
-function nextGeneration() {
-    let b = deathPlayers.splice(0, 1);
-    let w = b[0].brain.getAllWeights();
-
-    let c = new Car(conf);
-    c.color = 'rgba(255,0,0, 0.25)'
-    let br = getNewBrain();
-    br.setWeights(w);
-
-
-    alivePlayers.push(new Player(c, br));
-
-    for (let i = 0; i < 29; i++) {
-        let newWeights = mutate(b[0], 2);
-        let car = new Car(conf);
-        let brain = getNewBrain();
-        brain.setWeights(newWeights);
-        alivePlayers.push(new Player(car, brain));
-    }
-
-    for (let i = 0; i < 20; i++) {
-        let newWeights = mutate(b[0], 1);
-        let car = new Car(conf);
-        let brain = getNewBrain();
-        brain.setWeights(newWeights);
-        alivePlayers.push(new Player(car, brain));
-    }
-
-    for (let i = 0; i < 20; i++) {
-        let newWeights = mutate(b[0], 0.5);
-        let car = new Car(conf);
-        let brain = getNewBrain();
-        brain.setWeights(newWeights);
-        alivePlayers.push(new Player(car, brain));
-    }
-
-
-    b = deathPlayers.splice(0, 4);
-
-    for (let i = 0; i < 20; i++) {
-        let newWeights = mutate(b[i % 4]);
-        let car = new Car(conf);
-        let brain = getNewBrain();
-        brain.setWeights(newWeights);
-        alivePlayers.push(new Player(car, brain));
-    }
-
-    for (let i = 0; i < 10; i++) {
-        let car = new Car(conf);
-        let brain = getNewBrain();
-        brain.initRandomWeights();
-        alivePlayers.push(new Player(car, brain));
-    }
-    deathPlayers = [];
-    isprint = false;
-}
-
-function mutate(player, change) {
-    let weights = player.brain.getAllWeights();
-    for (let i = 0; i < weights.length; i++) {
-        const a = Math.random();
-        if (a < 0.2) {
-            weights[i] -= change;
-        } else if (a < 0.4) {
-            weights[i] += change;
-        } else if (a < 0.5) {
-            weights[i] = getRandomWeight();
-        }
-    }
-    return weights;
-}
-
-function roundWeight(n, k) {
-    var factor = Math.pow(10, k + 1);
-    n = Math.round(Math.round(n * factor) / 10);
-    return n / (factor / 10);
-}
-
-function getRandomWeight() {
-    return this.roundWeight(Math.random() * 2 - 1, 2);
 }
 
 function getNewBrain() {
