@@ -182,7 +182,7 @@ class ChartService {
         if(len > 0) {
             const firstTime = this.progressVals[0];
             const lastTime = this.progressVals[len-1];
-            let progress = (firstTime / lastTime -1)* 100;
+            let progress = (1 - lastTime / firstTime)* 100;
             progress = roundWeight(progress, 2);
             textSize(16);
             fill(11, 102, 35);
