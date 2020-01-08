@@ -68,15 +68,20 @@ function setup() {
     boundries.push(new Boundry(750, 50, 750, 300));
     boundries.push(new Boundry(750, 300, 650, 400));
     boundries.push(new Boundry(600, 300, 350, 300));
+    boundries.push(new Boundry(350, 300, 200, 200));
     boundries.push(new Boundry(650, 250, 600, 300));
-    boundries.push(new Boundry(650, 400, 450, 400));
-    boundries.push(new Boundry(350, 300, 350, 600));
-
-    boundries.push(new Boundry(450, 400, 450, 500));
-    boundries.push(new Boundry(450, 500, 650, 500));
-
-    boundries.push(new Boundry(350, 600, 650, 600));
-    boundries.push(new Boundry(650, 500, 650, 600));
+    boundries.push(new Boundry(650, 400, 350, 400));
+    boundries.push(new Boundry(350, 400, 200, 300));
+    boundries.push(new Boundry(200, 200, 100, 300));
+    boundries.push(new Boundry(200, 300, 200, 400));
+    boundries.push(new Boundry(100, 300, 100, 400));
+    boundries.push(new Boundry(200, 550, 100, 400));
+    boundries.push(new Boundry(300, 450, 200, 400));
+    boundries.push(new Boundry(300, 500, 200, 550));
+    boundries.push(new Boundry(300, 450, 650, 450));
+    boundries.push(new Boundry(300, 500, 350, 550));
+    boundries.push(new Boundry(350, 550, 650, 550));
+    boundries.push(new Boundry(650, 450, 650, 550));
 
     checkPoints.set(0, new CheckPoint(150, 50, 150, 150));
     checkPoints.set(1, new CheckPoint(250, 50, 250, 150));
@@ -87,10 +92,14 @@ function setup() {
     checkPoints.set(6, new CheckPoint(650, 250, 750, 300));
     checkPoints.set(7, new CheckPoint(600, 300, 650, 400));
     checkPoints.set(8, new CheckPoint(500, 400, 500, 300));
-    checkPoints.set(9, new CheckPoint(450, 400, 350, 400));
-    checkPoints.set(10, new CheckPoint(450, 500, 350, 500));
-    checkPoints.set(11, new CheckPoint(500, 600, 500, 500));
-    checkPoints.set(12, new CheckPoint(600, 500, 600, 600));
+    checkPoints.set(9, new CheckPoint(350, 400, 350, 300));
+    checkPoints.set(10, new CheckPoint(260, 342, 260, 238));
+    checkPoints.set(11, new CheckPoint(200, 200, 200, 300));
+    checkPoints.set(12, new CheckPoint(100, 300, 200, 300));
+    checkPoints.set(13, new CheckPoint(100, 400, 200, 400));
+    checkPoints.set(14, new CheckPoint(300, 450, 300, 500));
+    checkPoints.set(15, new CheckPoint(400, 450, 400, 550));
+    checkPoints.set(16, new CheckPoint(500, 450, 500, 550));
 
     killButton = createButton('Kill');
     killButton.position(30, 550);
