@@ -5,6 +5,7 @@ class SettingService {
         this.w = w;
         this.h = h;
         this.populationSlid;
+        this.turnCheckbox;
     }
 
     draw() {
@@ -21,6 +22,15 @@ class SettingService {
         this.populationSlid = createSlider(10, 200, 50, 10);
         this.populationSlid.position(this.x + 120, this.y + 10);
         this.populationSlid.style('width', '100px');
+
+        this.turnCheckbox = createCheckbox('turn', true);
+        this.turnCheckbox.position(this.x + 10, this.y + 50);
+        this.turnCheckbox.changed(this.turnChecked);
+    }
+
+    turnChecked(e) {
+        console.log(this.checked());
+        console.log(e.target.value);
     }
 }
 
