@@ -10,6 +10,7 @@ class SettingService {
         push();
         translate(this.x, this.y);
         line(0,0,0,this.h);
+        
         pop();
     }
 }

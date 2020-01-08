@@ -9,12 +9,14 @@ let chartService;
 let settingService;
 let mutationService;
 
-let sim = true;
-let isprint = false;
+let sim = false;
 
 let generation = 1;
 
 let killButton;
+
+let startButton;
+let restartButton;
 
 const carConf = {
     dt: 0.2,
@@ -47,13 +49,6 @@ function setup() {
     chartService = new ChartService(30, 660);
     settingService = new SettingService(800,0,0, 640);
     mutationService = new MutationService(mutateConf, carConf, playersAmount);
-
-    for (let i = 0; i < playersAmount; i++) {
-        let car = new Car(carConf);
-        let brain = getNewBrain();
-        brain.initRandomWeights();
-        alivePlayers.push(new Player(car, brain));
-    }
 
     counter = 0;
 
@@ -108,6 +103,16 @@ function setup() {
     killButton = createButton('Kill');
     killButton.position(30, 550);
     killButton.mousePressed(killAllPlayers);
+
+    startButton = createButton('Start');
+    startButton.position(820, 550);
+    startButton.size(70, 30);
+    startButton.mousePressed(startSimulation);
+
+    startButton = createButton('Restart');
+    startButton.position(900, 550);
+    startButton.size(70, 30);
+    startButton.mousePressed(restartSimulation);
 }
 
 function draw() {
@@ -160,13 +165,19 @@ function draw() {
             return b.getScore() - a.getScore();
         });
         let allPlayers = [...deathPlayers];
-        const bestScore = allPlayers[0].getScore();
-        const brain = allPlayers[0].brain;
-        const time = allPlayers[0].timer;
-        alivePlayers = mutationService.getNextGeneration(allPlayers, chartService.score === 100);
-        deathPlayers = [];
-        counter = 0;
-        generation++;
+        let bestScore = 0;
+        let brain = null;
+        let time = 0;
+
+        if(allPlayers.length > 0 ) {
+            bestScore = allPlayers[0].getScore();
+            brain = allPlayers[0].brain;
+            time = allPlayers[0].timer;
+            alivePlayers = mutationService.getNextGeneration(allPlayers, chartService.score === 100);
+            deathPlayers = [];
+            counter = 0;
+            generation++;
+        }
         chartService.calculateChartBrainElements(brain);
         chartService.calculateScore(bestScore, checkPoints.size);
         chartService.addNewTimeValueIfTrackFinished(time);
@@ -196,4 +207,25 @@ function killAllPlayers() {
     deathPlayers.push(alivePlayers);
     deathPlayers = deathPlayers.flat();
     alivePlayers = [];
+}
+
+function startSimulation() {
+    sim = true;
+    getNewPlayers();
+}
+
+function restartSimulation() {
+    sim = false;
+    alivePlayers = [];
+    deathPlayers = [];
+    chartService.reset();
+}
+
+function getNewPlayers() {
+    for (let i = 0; i < playersAmount; i++) {
+        let car = new Car(carConf);
+        let brain = getNewBrain();
+        brain.initRandomWeights();
+        alivePlayers.push(new Player(car, brain));
+    }
 }

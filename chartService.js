@@ -11,6 +11,12 @@ class ChartService {
         this.progressVals = [];
     }
 
+    reset() {
+        this.score = 0;
+        this.chartBrainElements = [];
+        this.progressVals = [];
+    }
+
     calculateScore(actualCP, allCPs) {
         this.score = Math.floor(actualCP / allCPs * 100);
         this.scoreText = actualCP + '/' + allCPs + '    ' + this.score + '%';
