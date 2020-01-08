@@ -50,6 +50,7 @@ function setup() {
     settingService = new SettingService(800,0,0, 640);
     mutationService = new MutationService(mutateConf, carConf, playersAmount);
 
+    settingService.getInputs();
     counter = 0;
 
     boundries.push(new Boundry(100, 150, 250, 150));
