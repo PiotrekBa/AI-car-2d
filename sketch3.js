@@ -36,7 +36,9 @@ const mutateConf = {
     roughChange: 2,
     midChange: 1,
     precChange: 0.5,
-    restPlayers: 4
+    restPlayers: 4,
+    accuracyChange: 0.1,
+    useAccuracy: true
 }
 
 function setup() {
@@ -159,7 +161,7 @@ function draw() {
         const bestScore = allPlayers[0].getScore();
         const brain = allPlayers[0].brain;
         const time = allPlayers[0].timer;
-        alivePlayers = mutationService.getNextGeneration(allPlayers);
+        alivePlayers = mutationService.getNextGeneration(allPlayers, chartService.score === 100);
         deathPlayers = [];
         counter = 0;
         generation++;

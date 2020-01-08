@@ -5,7 +5,31 @@ class MutationService {
         this.playersAmount = playersAmount;
     }
 
-    getNextGeneration(allPlayers) {
+    getNextGeneration(allPlayers, isFinished) {
+        if(this.conf.useAccuracy && isFinished) {
+            return this.getAccuracyNextGeneration(allPlayers);
+        } else {
+            return this.getNormalNextGeneretion(allPlayers);
+        }
+    }
+
+    getAccuracyNextGeneration(allPlayers) {
+        const bestPlayer = allPlayers.splice(0, 1)[0];
+        const bestWeights = bestPlayer.brain.getAllWeights();
+
+        let newBestCar = new Car(this.carConf);
+        newBestCar.color = 'rgba(255,0,0, 0.25)'
+        let newBestBrain = getNewBrain();
+        newBestBrain.setWeights(bestWeights);
+
+        let newPlayers = [];
+        newPlayers.push(new Player(newBestCar, newBestBrain));
+        newPlayers.push(this.getMutateNewPlayers(bestPlayer, 89, this.conf.accuracyChange));
+        newPlayers.push(this.getRandomPlayers(this.playersAmount - newPlayers.flat().length));
+        return newPlayers.flat();
+    }
+
+    getNormalNextGeneretion(allPlayers) {
         const bestPlayer = allPlayers.splice(0, 1)[0];
         const bestWeights = bestPlayer.brain.getAllWeights();
 
