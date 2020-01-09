@@ -6,14 +6,21 @@ class SettingService {
         this.h = h;
         this.populationSlid;
         this.turnCheckbox;
+        this.turnCheckboxVal = true;
+        this.hiddenLayer1Slid;
+        this.hiddenLayer2Slid;
     }
 
     draw() {
         push();
         translate(this.x, this.y);
-        textSize(20);
+        textSize(16);
         text('Population', 10, 30);
-        text(this.populationSlid.value(), 230,30);
+        text(this.populationSlid.value(), 230, 30);
+        text('1 Hidden layer', 10, 100);
+        text(this.hiddenLayer1Slid.value(), 230, 100);
+        text('2 Hidden layer', 10, 140);
+        text(this.hiddenLayer2Slid.value(), 230, 140);
         line(0, 0, 0, this.h);
         pop();
     }
@@ -23,14 +30,22 @@ class SettingService {
         this.populationSlid.position(this.x + 120, this.y + 10);
         this.populationSlid.style('width', '100px');
 
-        this.turnCheckbox = createCheckbox('turn', true);
+        this.turnCheckbox = createCheckbox('Dichotomous turn', true);
         this.turnCheckbox.position(this.x + 10, this.y + 50);
+        this.turnCheckbox.style('width', '200px');
         this.turnCheckbox.changed(this.turnChecked);
+
+        this.hiddenLayer1Slid = createSlider(2, 12, 6, 1);
+        this.hiddenLayer1Slid.position(this.x + 120, this.y + 80);
+        this.hiddenLayer1Slid.style('width', '100px');
+
+        this.hiddenLayer2Slid = createSlider(2, 12, 4, 1);
+        this.hiddenLayer2Slid.position(this.x + 120, this.y + 120);
+        this.hiddenLayer2Slid.style('width', '100px');
     }
 
-    turnChecked(e) {
-        console.log(this.checked());
-        console.log(e.target.value);
+    turnChecked() {
+        this.turnCheckboxVal = this.checked();
     }
 }
 
