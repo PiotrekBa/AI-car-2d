@@ -61,10 +61,10 @@ function setup() {
     boundries.push(new Boundry(400, 150, 550, 150));
     boundries.push(new Boundry(650, 50, 550, 150));
     boundries.push(new Boundry(550, 250, 650, 150));
-    boundries.push(new Boundry(650, 50, 750, 50));
+    boundries.push(new Boundry(650, 50, 790, 50));
     boundries.push(new Boundry(650, 150, 650, 250));
-    boundries.push(new Boundry(750, 50, 750, 300));
-    boundries.push(new Boundry(750, 300, 650, 400));
+    boundries.push(new Boundry(790, 50, 790, 300));
+    boundries.push(new Boundry(790, 300, 650, 400));
     boundries.push(new Boundry(600, 300, 350, 300));
     boundries.push(new Boundry(350, 300, 200, 200));
     boundries.push(new Boundry(650, 250, 600, 300));
@@ -87,9 +87,9 @@ function setup() {
     checkPoints.set(3, new CheckPoint(550, 150, 550, 250));
     checkPoints.set(4, new CheckPoint(600, 100, 600, 200));
     checkPoints.set(5, new CheckPoint(650, 50, 650, 150));
-    checkPoints.set(6, new CheckPoint(650, 150, 750, 150));
-    checkPoints.set(7, new CheckPoint(650, 200, 750, 200));
-    checkPoints.set(8, new CheckPoint(650, 250, 750, 300));
+    checkPoints.set(6, new CheckPoint(650, 150, 790, 150));
+    checkPoints.set(7, new CheckPoint(650, 200, 790, 200));
+    checkPoints.set(8, new CheckPoint(650, 250, 790, 300));
     checkPoints.set(9, new CheckPoint(600, 300, 650, 400));
     checkPoints.set(10, new CheckPoint(500, 400, 500, 300));
     checkPoints.set(11, new CheckPoint(350, 400, 350, 300));
