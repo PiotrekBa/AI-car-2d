@@ -33,7 +33,7 @@ class SettingService {
         this.turnCheckbox = createCheckbox('Dichotomous turn', true);
         this.turnCheckbox.position(this.x + 10, this.y + 50);
         this.turnCheckbox.style('width', '200px');
-        this.turnCheckbox.changed(this.turnChecked);
+        this.turnCheckbox.changed(turnChecked);
 
         this.hiddenLayer1Slid = createSlider(2, 12, 6, 1);
         this.hiddenLayer1Slid.position(this.x + 120, this.y + 80);
@@ -56,6 +56,10 @@ class SettingService {
             hidden2: this.hiddenLayer2Slid.value()
         }
     }
+}
+
+function turnChecked() {
+    settingService.turnCheckboxVal = this.checked();
 }
 
 /*czym sterować:
