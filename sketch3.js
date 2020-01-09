@@ -149,7 +149,7 @@ function draw() {
     }
     textSize(32)
     // text(alivePlayers.length, 30, 30);
-    text("x = " + mouseX + " ; y = " + mouseY, 30, 30);
+    // text("x = " + mouseX + " ; y = " + mouseY, 30, 30);
     text('Gen: ' + generation, 500, 30);
 
     if (sim) {
