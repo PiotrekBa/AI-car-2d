@@ -46,11 +46,11 @@ class Player {
         }
 
         if (outputs[1] > 0.6) {
-            const x = norm(outputs[1]-0.55, 0, 0.45)
-            this.car.turnLeft(x);
+            const turn = actualSetting.dichTurn ? 1 : norm(outputs[1]-0.55, 0, 0.45); 
+            this.car.turnLeft(turn);
         } else if (outputs[1] < 0.4){
-            const x = norm(outputs[1], 0, 0.45)
-            this.car.turnRight(x);
+            const turn = actualSetting.dichTurn ? 1 : norm(outputs[1], 0, 0.45);
+            this.car.turnRight(turn);
         }
     }
 

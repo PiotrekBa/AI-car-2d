@@ -3,7 +3,6 @@ let checkPoints = new Map();
 let counter;
 let deathPlayers = [];
 let alivePlayers = [];
-const playersAmount = 100;
 
 let chartService;
 let settingService;
@@ -17,6 +16,15 @@ let killButton;
 
 let startButton;
 let restartButton;
+
+let defSettingConf = {
+    population: 50,
+    dichTurn: true,
+    hidden1: 6,
+    hidden2: 4
+}
+
+let actualSetting = defSettingConf;
 
 const carConf = {
     dt: 0.2,
@@ -48,7 +56,7 @@ function setup() {
 
     chartService = new ChartService(30, 660);
     settingService = new SettingService(800,0,0, 640);
-    mutationService = new MutationService(mutateConf, carConf, playersAmount);
+    mutationService = new MutationService(mutateConf, carConf, actualSetting.population);
 
     settingService.getInputs();
     counter = 0;
@@ -201,7 +209,9 @@ function getRandomWeight() {
 }
 
 function getNewBrain() {
-    return new Brain(5, 6, 4, 2);
+    const hidden1 = actualSetting.hidden1;
+    const hidden2 = actualSetting.hidden2;
+    return new Brain(5, hidden1, hidden2, 2);
 }
 
 function killAllPlayers() {
@@ -212,6 +222,9 @@ function killAllPlayers() {
 
 function startSimulation() {
     sim = true;
+    actualSetting = settingService.getSettings();
+    counter = 0;
+    mutationService.playersAmount = actualSetting.population;
     getNewPlayers();
 }
 
@@ -223,7 +236,7 @@ function restartSimulation() {
 }
 
 function getNewPlayers() {
-    for (let i = 0; i < playersAmount; i++) {
+    for (let i = 0; i < actualSetting.population; i++) {
         let car = new Car(carConf);
         let brain = getNewBrain();
         brain.initRandomWeights();

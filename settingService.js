@@ -47,6 +47,15 @@ class SettingService {
     turnChecked() {
         this.turnCheckboxVal = this.checked();
     }
+
+    getSettings() {
+        return {
+            population: this.populationSlid.value(),
+            dichTurn: this.turnCheckboxVal,
+            hidden1: this.hiddenLayer1Slid.value(),
+            hidden2: this.hiddenLayer2Slid.value()
+        }
+    }
 }
 
 /*czym sterować:
