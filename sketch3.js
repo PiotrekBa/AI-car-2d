@@ -122,6 +122,8 @@ function setup() {
     startButton.position(900, 550);
     startButton.size(70, 30);
     startButton.mousePressed(resetSimulation);
+
+    let div = createDiv(getInstruction());
 }
 
 function draw() {
