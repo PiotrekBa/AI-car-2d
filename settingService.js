@@ -26,7 +26,7 @@ class SettingService {
     }
 
     getInputs() {
-        this.populationSlid = createSlider(10, 200, 50, 10);
+        this.populationSlid = createSlider(10, 200, actualSetting.population, 10);
         this.populationSlid.position(this.x + 120, this.y + 10);
         this.populationSlid.style('width', '100px');
 

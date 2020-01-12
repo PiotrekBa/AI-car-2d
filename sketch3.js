@@ -18,7 +18,7 @@ let startButton;
 let restartButton;
 
 let defSettingConf = {
-    population: 50,
+    population: 100,
     dichTurn: true,
     hidden1: 6,
     hidden2: 4
