@@ -232,6 +232,7 @@ function resetSimulation() {
     sim = false;
     alivePlayers = [];
     deathPlayers = [];
+    generation = 1;
     chartService.reset();
 }
 
