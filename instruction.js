@@ -25,8 +25,8 @@ function getInstruction() {
     '<p>O - outputs of neural network whith neurons, first is for gas pedal and second is for turn a car</p>'+
     '<p>Circle - (h1,h2 and O) neurons </p>'+
     '<p>Black line - neuron weight with zero value</p>'+
-    '<p>Red line - neuron weight with positive value</p>'+
-    '<p>Blue line - neuron weight with negative value</p>'+
+    '<p>Red line - neuron weight with positive value, a thicker line means a higher absolute value</p>'+
+    '<p>Blue line - neuron weight with negative value, a thicker line means a higher absolute value</p>'+
     '<p>Black circle border - neuron bias with zero value</p>'+
     '<p>Red circle border - neuron bias with positive value</p>'+
     '<p>Blue circle border - neuron bias with negative value</p>'+
