@@ -118,10 +118,10 @@ function setup() {
     startButton.size(70, 30);
     startButton.mousePressed(startSimulation);
 
-    startButton = createButton('Restart');
+    startButton = createButton('Reset');
     startButton.position(900, 550);
     startButton.size(70, 30);
-    startButton.mousePressed(restartSimulation);
+    startButton.mousePressed(resetSimulation);
 }
 
 function draw() {
@@ -228,7 +228,7 @@ function startSimulation() {
     getNewPlayers();
 }
 
-function restartSimulation() {
+function resetSimulation() {
     sim = false;
     alivePlayers = [];
     deathPlayers = [];
